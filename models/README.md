@@ -104,7 +104,7 @@ The performance of the evaluation have been done using different datasets, to ha
 Below are specified the others datasets used:
 
 * [Celeb Face Data Set](../data/CelebA/README.md)
-* [UTK Face](../data/UTK%20face/README.md)
+* [UTK Face](../data/UTK_face/README.md)
 
 <center>
 
