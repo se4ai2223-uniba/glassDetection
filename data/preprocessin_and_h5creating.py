@@ -106,8 +106,8 @@ with open(csv_path) as csvfile:
             load_image = cv2.filter2D(src=load_image, ddepth=-1, kernel=kernel)
             load_image = cv2.resize(load_image, (img_size,img_size))
             data_image.append(load_image)
-            data_label1.append(row[19])
-            data_label2.append(row[20])
+            data_label1.append(int(row[19]))
+            data_label2.append(int(row[20]))
 
             if str(row[19]) == '1' or str(row[20])== '1':
                 filp_new_img = np.copy(load_image)
@@ -116,18 +116,18 @@ with open(csv_path) as csvfile:
 
                 filp_new_img = _horizontal_flip_pass(load_image)
                 data_image.append(filp_new_img)
-                data_label1.append(row[19])
-                data_label2.append(row[20])
+                data_label1.append(int(row[19]))
+                data_label2.append(int(row[20]))
 
                 rotation_new_img = _rotate_pass(load_image)
                 data_image.append(rotation_new_img)
-                data_label1.append(row[19])
-                data_label2.append(row[20])
+                data_label1.append(int(row[19]))
+                data_label2.append(int(row[20]))
 
                 brighnes_new_img = _brightness_shift_pass(load_image)
                 data_image.append(brighnes_new_img)
-                data_label1.append(row[19])
-                data_label2.append(row[20])
+                data_label1.append(int(row[19]))
+                data_label2.append(int(row[20]))
                 # counter = counter + 1
 
 
@@ -142,4 +142,5 @@ hf.create_dataset('img', data=data_image)
 hf.create_dataset('wearing_glasses', data=data_label1)
 hf.create_dataset('wearing_sunglasses', data=data_label2)
 hf.close()
+
 print("End procedure")
