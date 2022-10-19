@@ -127,7 +127,7 @@ with open('./data/Selfie_reduced/selfie_dataset.csv') as csvfile:
 hf = h5py.File("./data/Selfie_reduced/selfie_reduced.h5", 'w')
 
 hf.create_dataset('img', data=data_image)
-hf.create_dataset('data_label1', data=data_label1)
-hf.create_dataset('data_label2', data=data_label2)
+hf.create_dataset('wearing_glasses', data=data_label1)
+hf.create_dataset('wearing_sunglasses', data=data_label2)
 hf.close()
 print("End procedure")

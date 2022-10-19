@@ -56,8 +56,8 @@ mlflow.log_param("random_state", random_state)
 with h5py.File("./data/Selfie_reduced/selfie_reduced.h5",'r') as data_aug:
   
   X = data_aug["img"][...] 
-  aug_wearing_glasses = data_aug["data_label1"][...] 
-  aug_wearing_sunglasses = data_aug["data_label2"][...] 
+  aug_wearing_glasses = data_aug["wearing_glasses"][...] 
+  aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...] 
 
 y = []
 for i in range(len(aug_wearing_glasses)):
