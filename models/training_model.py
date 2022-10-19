@@ -38,7 +38,7 @@ mlflow.set_tracking_uri(f'https://dagshub.com/' + os.environ['MLFLOW_TRACKING_US
 mlflow.start_run()
 
 
-# IMPORTA DATASET
+# IMPORT DATASET
 dataset_used = "selfie"
 mlflow.log_param("dataset_used", dataset_used)
 random_state=1
@@ -133,6 +133,4 @@ mlflow.tensorflow.autolog()
 #FIT THE MODEL
 glasses_model.fit(x=X_train, y=y_train, batch_size=32, epochs=1, verbose=1, validation_data=(X_valid, y_valid), callbacks=[callback, model_checkpoint_callback_glasses])
 
-# Load best model from checkpoint
-best_model_glasses = load_model(checkpoint_filepath_glasses)
 
