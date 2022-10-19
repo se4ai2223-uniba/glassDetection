@@ -1,4 +1,5 @@
 
+from fileinput import filename
 import random
 import imutils
 from skimage.util import random_noise
@@ -12,11 +13,15 @@ import cv2
 import glob
 #move files
 import os, shutil
-path = "./Selfie_reduced/images/"
-#moveto = "c:/users/andre/pycharmprojects/glassdetection/data/selfie_reduced/images/"
 import sys
-sys.path.insert(0, './src/')
+
+dir = os.path.dirname(__file__)
+
+filename=os.path.join(dir, "..", "src")
+sys.path.insert(0, filename)
 from FaceAlignerNetwork import FaceAligner
+
+
 
 def _blur_pass(img, sigmaX = None):
     sx = 0
@@ -80,15 +85,21 @@ data_image = []
 data_label1 = []
 data_label2 = []
 
-with zipfile.ZipFile('./data/selfie_reduced/Selfie-dataset.zip', 'r') as zip_ref:
-    zip_ref.extractall('./data/selfie_reduced/')
+filename=os.path.join(dir, "..", "data","Selfie_reduced")
+sys.path.insert(0, filename)
 
-with open('./data/Selfie_reduced/selfie_dataset.csv') as csvfile:
+zip_path = os.path.join(filename ,"Selfie-dataset.zip")
+with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extractall(filename)
+
+csv_path = os.path.join(filename ,"selfie_dataset.csv")
+img_path = os.path.join(filename ,"images")
+with open(csv_path) as csvfile:
     spamreader = csv.reader(csvfile, delimiter=';')
     i = 0
     for row in spamreader:
         if i > 0:
-            load_image = cv2.imread("./data/Selfie_reduced/images/" +row[0]+".jpg")
+            load_image = cv2.imread(os.path.join(img_path ,row[0]+".jpg"))
             face_aligner = FaceAligner(desiredLeftEye=(0.37,0.28),desiredFaceWidth=img_size)
             grey_image = cv2.cvtColor(load_image, cv2.COLOR_BGR2GRAY)
             load_image, _ = face_aligner.align(grey_image, load_image)
@@ -124,7 +135,8 @@ with open('./data/Selfie_reduced/selfie_dataset.csv') as csvfile:
         if i == 101 :
             break
 
-hf = h5py.File("./data/Selfie_reduced/selfie_reduced.h5", 'w')
+h5_path = os.path.join(filename ,"selfie_reduced.h5")
+hf = h5py.File(h5_path, 'w')
 
 hf.create_dataset('img', data=data_image)
 hf.create_dataset('wearing_glasses', data=data_label1)
