@@ -33,7 +33,8 @@ class FaceAligner:
         # eye position, and desired output face width + height
         #self.detector = dlib.cnn_face_detection_model_v1(os.path.join('trained_models', 'mmod_human_face_detector.dat'))
         self.detector = dlib.get_frontal_face_detector()
-        self.predictor = dlib.shape_predictor( os.path.join('models','shape_predictor_5_face_landmarks.dat'))
+        self.predictor = dlib.shape_predictor(os.path.join(os.path.dirname(__file__),'models','shape_predictor_5_face_landmarks.dat'))
+
         self.desiredLeftEye = desiredLeftEye
         self.desiredFaceWidth = desiredFaceWidth
         self.desiredFaceHeight = desiredFaceHeight

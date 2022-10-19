@@ -137,6 +137,6 @@ print(conf_matrix_glasses)
 accuracy_glasses = accuracy_score(y_test, model_predictions)
 print("accuracy")
 print(accuracy_glasses)
-mlflow.log_metric("accuracy", accuracy_glasses)
+mlflow.log_metric("testset_accuracy", accuracy_glasses)
 
 mlflow.end_run()
