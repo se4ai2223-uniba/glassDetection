@@ -1,10 +1,14 @@
-# local package
--e .
-
-# external requirements
-click
-Sphinx
-coverage
-awscli
-flake8
-python-dotenv>=0.5.1
+tensorflow==2.10.0
+cmake==3.24.1.1 # need for the dlib installation
+#dlib
+h5py==3.7.0
+imutils==0.5.4
+keras==2.10.0
+mlflow==1.29.0
+numpy==1.23.3
+opencv-python==4.6.0.66
+python-dotenv==0.21.0
+scikit_image==0.19.3
+scikit_learn==1.1.2
+setuptools==63.2.0
+#skimage==0.0 already satisfied with scikit_image

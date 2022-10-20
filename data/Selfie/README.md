@@ -66,7 +66,7 @@ The only supported language by the Selfie dataset is english.
 
 ### Data Instances
 
-**[selfie_dataset.txt](selfie_dataset.txt)** provides the annotations and is structured as:
+**[selfie_dataset.txt](./processed/selfie_dataset.txt)** provides the annotations and is structured as:
 * image name 
 * popularity score
 * [attributes](#data-instances)

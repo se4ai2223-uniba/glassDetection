@@ -72,7 +72,7 @@ The only supported language by the CelebA dataset is english.
 
 ### Data Instances
 
-**[list_attr_celeba.txt](list_attr_celeba.txt)** provides the annotations and is structured as:
+**[list_attr_celeba.txt](./raw/list_attr_celeba.txt)** provides the annotations and is structured as:
 - image name
 - attributes
 

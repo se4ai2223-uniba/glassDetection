@@ -1,0 +1,43 @@
+schema: '2.0'
+stages:
+  process-dataset:
+    cmd: python -m src.data.make_dataset
+    deps:
+    - path: data/Selfie_reduced/raw/Selfie-dataset.zip
+      md5: 59d2a5f97629becbdc316938a2650fd8
+      size: 3649634
+    - path: src/data/make_dataset.py
+      md5: 4e2ebff0997351839f48748d256d4cf9
+      size: 5743
+    outs:
+    - path: data/Selfie_reduced/processed
+      md5: 0877afcca793cd5d29beeb4caff1d639.dir
+      size: 30765359
+      nfiles: 103
+  train:
+    cmd: python -m src.models.train_model
+    deps:
+    - path: data/Selfie_reduced/processed/selfie_reduced.h5
+      md5: fe164fd9773ef20e72e40bef878d441b
+      size: 21490753
+    - path: src/models/train_model.py
+      md5: 21578401638c15893dbbdaac24829a85
+      size: 4617
+    outs:
+    - path: models/CNN/
+      md5: 2c28bcd8cbeb4ac120f44b9241c303fe.dir
+      size: 12460394
+      nfiles: 4
+  evaluation:
+    cmd: python -m src.models.predict_model
+    deps:
+    - path: data/Selfie_reduced/processed/selfie_reduced.h5
+      md5: fe164fd9773ef20e72e40bef878d441b
+      size: 21490753
+    - path: models/CNN/
+      md5: 2c28bcd8cbeb4ac120f44b9241c303fe.dir
+      size: 12460394
+      nfiles: 4
+    - path: src/models/predict_model.py
+      md5: b4b1cbbbcebb778449736d80758cd63a
+      size: 4893
