@@ -117,7 +117,6 @@ The choice of the Selfie Dataset was due to the fact that, the GlassDect model h
 In order to be used for the Glasses Detection task, a phase of feature selection has been done taking in consideration over the 36 attributes just 2 of them: `glasses`, `sunglasses`. 
 
 From the original data collection, a `.h5` file has been created for practical reasons to be used in the training phase. 
-[comment]: <> (come è struttrato) 
 In order to create a label that represent when a subject is wearing glasses, a logic OR has been done between the previews two labels that represent `glasses` and `sunglasses`. The results shows that the two resulting classes were unbalanced, so a balancing phase has been done using the offline data augmentation(flipped, rotation and brightness shifting) only to the images with subject wearing glasses.
 
 A preprocessing has been done using the following techniques in the following order:
