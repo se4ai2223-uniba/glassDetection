@@ -111,7 +111,9 @@ The choice of this dataset is due to two main facts:
 
 #### Initial Data Collection and Normalization
 
-From the original data collection, a `.h5` file has been created for practical reasons to be used in the training phase. [comment](come è struttrato) Considering only the glass label, the two resulting classes were unbalanced, so a balancing phase has been done using the offline data augmentation only to the images with subject wearing glass.
+From the original data collection, a `.h5` file has been created for practical reasons to be used in the training phase. 
+[comment]: <> (come è struttrato) 
+Considering only the glass label, the two resulting classes were unbalanced, so a balancing phase has been done using the offline data augmentation only to the images with subject wearing glass.
 
 The dataset has been preprocessed in the following way:
 
