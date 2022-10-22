@@ -1,9 +1,9 @@
 import os
+from collections import OrderedDict
+
 import cv2
 import dlib
 import numpy as np
-from collections import OrderedDict
-
 
 FACIAL_LANDMARKS_5_IDXS = OrderedDict([
     ("left_eye", (1, 2)),

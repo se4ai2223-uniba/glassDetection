@@ -119,7 +119,7 @@ model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(
 
 
 glasses_model.summary()
-mlflow.tensorflow.autolog()
+mlflow.tensorflow.autolog(log_models=True, registered_model_name="GlassDect",disable=False, exclusive=False, disable_for_unsupported_versions=False, silent=False, log_input_examples=False, log_model_signatures=False)
 
 # FIT THE MODEL
 glasses_model.fit(x=X_train, y=y_train, batch_size=32, epochs=1, verbose=1, validation_data=(

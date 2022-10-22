@@ -17,10 +17,9 @@ import imutils
 import numpy as np
 from dotenv import find_dotenv, load_dotenv
 from skimage.util import random_noise
-
-from FaceAlignerNetwork import FaceAligner
-
 dir = os.path.dirname(__file__)
+sys.path.insert(1, dir)
+from FaceAlignerNetwork import FaceAligner
 
 
 def _blur_pass(img, sigmaX=None):
@@ -151,7 +150,7 @@ def main():
                     # counter = counter + 1
 
             i = i+1
-            if i == 5:
+            if i == 101: #max size of the selfie_reduced dataset is 101
                 break
 
     h5_path = os.path.join(filename_processed, "selfie_reduced.h5")

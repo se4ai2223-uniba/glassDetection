@@ -2,21 +2,21 @@ stages:
   process-dataset:
     cmd: python -m src.data.make_dataset
     deps:
-    - src/data/make_dataset.py
-    - data/Selfie_reduced/raw/Selfie-dataset.zip
+      - src/data/FaceAlignerNetwork.py
+      - src/data/make_dataset.py
+      - data/Selfie_reduced/raw/Selfie-dataset.zip
     outs:
-    - data/Selfie_reduced/processed
+      - data/Selfie_reduced/processed
   train:
     cmd: python -m src.models.train_model
     deps:
-    - src/models/train_model.py
-    - data/Selfie_reduced/processed/selfie_reduced.h5
+      - src/models/train_model.py
+      - data/Selfie_reduced/processed/selfie_reduced.h5
     outs:
-    - models/CNN/
+      - models/CNN/
   evaluation:
     cmd: python -m src.models.predict_model
     deps:
-    - src/models/predict_model.py
-    - data/Selfie_reduced/processed/selfie_reduced.h5
-    - models/CNN/
-   
+      - src/models/predict_model.py
+      - data/Selfie_reduced/processed/selfie_reduced.h5
+      - models/CNN/
