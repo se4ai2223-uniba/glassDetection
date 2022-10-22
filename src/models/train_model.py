@@ -1,29 +1,17 @@
 # Caricare le librerie
-from sysconfig import get_python_version
-import tensorflow as tf
-from keras import callbacks
-from keras import optimizers
-from tensorflow.keras import Sequential
-from tensorflow.keras.models import load_model, clone_model
-from tensorflow.keras.layers import Dropout, Flatten, Dense, Conv2D, BatchNormalization, MaxPooling2D
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.losses import binary_crossentropy
-from sklearn.metrics import confusion_matrix, accuracy_score
-from tensorflow.keras.optimizers import SGD
-from sklearn.utils import shuffle
-from sklearn.model_selection import train_test_split
-
-
-import numpy as np
-import cv2
-import h5py
 import os
 
+import h5py
 import mlflow
 import mlflow.keras
+import numpy as np
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+from keras import Sequential
+from keras.layers import (BatchNormalization, Conv2D, Dense,
+                                     Dropout, Flatten, MaxPooling2D)
 
-#ML FLOW PARAMS
-# get_python_version().system_raw("mlflow ui --port 5000 &")
+# ML FLOW PARAMS
 # from getpass import getpass
 
 #os.environ['MLFLOW_TRACKING_USERNAME'] = input('Enter your DAGsHub username: ')
@@ -33,28 +21,31 @@ os.environ['MLFLOW_TRACKING_USERNAME'] = "GaetanoDibenedetto"
 os.environ['MLFLOW_TRACKING_PASSWORD'] = "ddec1d9afd9f6c362203803b1cee472f02892972"
 #os.environ['MLFLOW_TRACKING_PROJECTNAME'] = input('Enter your DAGsHub project name: ')
 os.environ['MLFLOW_TRACKING_PROJECTNAME'] = "glassDetection"
-mlflow.set_tracking_uri(f'https://dagshub.com/' + os.environ['MLFLOW_TRACKING_USERNAME'] + '/' + os.environ['MLFLOW_TRACKING_PROJECTNAME'] + '.mlflow')
+mlflow.set_tracking_uri(f'https://dagshub.com/' +
+                        os.environ['MLFLOW_TRACKING_USERNAME'] + '/'
+                        + os.environ['MLFLOW_TRACKING_PROJECTNAME'] + '.mlflow')
 
 mlflow.start_run()
 
 
 # IMPORT DATASET
-dataset_used = "selfie"
-mlflow.log_param("dataset_used", dataset_used)
-random_state=1
-mlflow.log_param("random_state", random_state)
+DATASET_USED = "selfie"
+mlflow.log_param("dataset_used", DATASET_USED)
+RANDOM_STATE = 1
+mlflow.log_param("random_state", RANDOM_STATE)
 
-with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5",'r') as data_aug:
-  
-  X = data_aug["img"][...] 
-  aug_wearing_glasses = data_aug["wearing_glasses"][...] 
-  aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...] 
+with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", 'r') as data_aug:
+
+    X = data_aug["img"][...]
+    aug_wearing_glasses = data_aug["wearing_glasses"][...]
+    aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
 
 y = []
-for i in range(len(aug_wearing_glasses)):
+for i,_ in enumerate(aug_wearing_glasses):
     if str(aug_wearing_glasses[i]) == '1' or str(aug_wearing_sunglasses[i]) == '1':
         y.append(1)
-    else : y.append(0)
+    else:
+        y.append(0)
 
 
 X_train, X_valid, y_train, y_valid = train_test_split(
@@ -62,7 +53,7 @@ X_train, X_valid, y_train, y_valid = train_test_split(
     y,
     train_size=0.8,
     test_size=0.2,
-    random_state=random_state,
+    random_state=RANDOM_STATE,
 )
 
 X_train = np.array(X_train)
@@ -70,23 +61,22 @@ X_valid = np.array(X_valid)
 y_train = np.array(y_train)
 y_valid = np.array(y_valid)
 
-#Params MLFLOW for datasets
-trainingSetSize = len(X_train)
-validationSetSize = len(X_valid)
+# Params MLFLOW for datasets
+TRAININGSETSIZE = len(X_train)
+TRAININGSETSIZE = len(X_valid)
 
-mlflow.log_param("trainingSetSize", trainingSetSize)
-mlflow.log_param("validationSetSize", validationSetSize)
+mlflow.log_param("trainingSetSize", TRAININGSETSIZE)
+mlflow.log_param("validationSetSize", TRAININGSETSIZE)
 
 
 # DEFINING THE MODEL
 
-#creation of the model 
-import keras.utils
-from keras import utils as np_utils
+# creation of the model
 
 glasses_model = Sequential()
 
-glasses_model.add(Conv2D(filters=16, kernel_size=(5, 5), activation="relu", input_shape = X_train[0].shape))
+glasses_model.add(Conv2D(filters=16, kernel_size=(
+    5, 5), activation="relu", input_shape=X_train[0].shape))
 glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
 glasses_model.add(BatchNormalization())
 glasses_model.add(Dropout(0.2))
@@ -115,22 +105,22 @@ glasses_model.add(Dense(1, activation='sigmoid'))
 
 
 # Fit the model
-glasses_model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+glasses_model.compile(loss='binary_crossentropy',
+                      optimizer='adam', metrics=['accuracy'])
 
 
-callback = tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', patience=5, verbose=1)
+callback = tf.keras.callbacks.EarlyStopping(
+    monitor='val_accuracy', patience=5, verbose=1)
 
-checkpoint_filepath_glasses = "./models/CNN/"
-#checkpoint_filepath_glasses = "/content/drive/My Drive/AndrettaDibenedetto/Consegna/models/finalModelGlassDetection"
+CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+
+model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(
+    filepath=CHECKPOINT_FILEPATH_GLASSES, monitor='val_loss', mode='min', save_best_only=True)
 
 
-model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_filepath_glasses, monitor='val_loss', mode='min', save_best_only=True)
-
-
-glasses_model.summary() 
+glasses_model.summary()
 mlflow.tensorflow.autolog()
 
-#FIT THE MODEL
-glasses_model.fit(x=X_train, y=y_train, batch_size=32, epochs=1, verbose=1, validation_data=(X_valid, y_valid), callbacks=[callback, model_checkpoint_callback_glasses])
-
-
+# FIT THE MODEL
+glasses_model.fit(x=X_train, y=y_train, batch_size=32, epochs=1, verbose=1, validation_data=(
+    X_valid, y_valid), callbacks=[callback, model_checkpoint_callback_glasses])
