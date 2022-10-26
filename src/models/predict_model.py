@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 # Caricare le librerie
 import h5py
 import mlflow
@@ -7,16 +8,15 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from keras.models import load_model
 
 
-
-with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", 'r') as data_aug:
+with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
 
     X_test = data_aug["img"][...]
     aug_wearing_glasses = data_aug["wearing_glasses"][...]
     aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
 
 y_test = []
-for i,_ in enumerate(aug_wearing_glasses):
-    if str(aug_wearing_glasses[i]) == '1' or str(aug_wearing_sunglasses[i]) == '1':
+for i, _ in enumerate(aug_wearing_glasses):
+    if str(aug_wearing_glasses[i]) == "1" or str(aug_wearing_sunglasses[i]) == "1":
         y_test.append(1)
     else:
         y_test.append(0)
