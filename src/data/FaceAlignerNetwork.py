@@ -1,17 +1,18 @@
-import os 
-import cv2
-import dlib
+# pylint: disable=invalid-name
+# pylint: disable=no-member
+# pylint: disable=missing-module-docstring
 
-import numpy as np
-
+import os
 from collections import OrderedDict
 
+import cv2
+import dlib
+import numpy as np
 
-FACIAL_LANDMARKS_5_IDXS = OrderedDict([
-    ("left_eye", (1,2)) ,
-    ("right_eye", (3,4)),
-    ("nose", (5,5))
-])
+FACIAL_LANDMARKS_5_IDXS = OrderedDict(
+    [("left_eye", (1, 2)), ("right_eye", (3, 4)), ("nose", (5, 5))]
+)
+
 
 def shape_to_np(shape, dtype="int"):
     # initialize the list of (x, y)-coordinates
@@ -27,13 +28,22 @@ def shape_to_np(shape, dtype="int"):
 
 
 class FaceAligner:
-    def __init__(self,  desiredLeftEye=(0.35, 0.35),
-                 desiredFaceWidth=256, desiredFaceHeight=None):
+    def __init__(
+        self, desiredLeftEye=(0.35, 0.35), desiredFaceWidth=256, desiredFaceHeight=None
+    ):
         # store the facial landmark predictor, desired output left
         # eye position, and desired output face width + height
-        #self.detector = dlib.cnn_face_detection_model_v1(os.path.join('trained_models', 'mmod_human_face_detector.dat'))
+        # self.detector = dlib.cnn_face_detection_model_v1(os.path.join('trained_models',
+        #  'mmod_human_face_detector.dat'))
         self.detector = dlib.get_frontal_face_detector()
-        self.predictor = dlib.shape_predictor(os.path.join(os.path.dirname(__file__),'models','shape_predictor_5_face_landmarks.dat'))
+        self.predictor = dlib.shape_predictor(
+            os.path.join(
+                os.path.dirname(__file__),
+                "..",
+                "models",
+                "shape_predictor_5_face_landmarks.dat",
+            )
+        )
 
         self.desiredLeftEye = desiredLeftEye
         self.desiredFaceWidth = desiredFaceWidth
@@ -44,8 +54,8 @@ class FaceAligner:
         if self.desiredFaceHeight is None:
             self.desiredFaceHeight = self.desiredFaceWidth
 
-    def align(self,gray,image):
-        faces = self.detector(gray,1)
+    def align(self, gray, image):
+        faces = self.detector(gray, 1)
         rect = None
         for f in faces:
             rect = f
@@ -79,15 +89,17 @@ class FaceAligner:
             # the ratio of the distance between eyes in the *current*
             # image to the ratio of distance between eyes in the
             # *desired* image
-            dist = np.sqrt((dX ** 2) + (dY ** 2))
-            desiredDist = (desiredRightEyeX - self.desiredLeftEye[0])
+            dist = np.sqrt((dX**2) + (dY**2))
+            desiredDist = desiredRightEyeX - self.desiredLeftEye[0]
             desiredDist *= self.desiredFaceWidth
             scale = desiredDist / dist
 
             # compute center (x, y)-coordinates (i.e., the median point)
             # between the two eyes in the input image
-            eyesCenter = (int((leftEyeCenter[0] + rightEyeCenter[0]) // 2),
-                        int((leftEyeCenter[1] + rightEyeCenter[1]) // 2))
+            eyesCenter = (
+                int((leftEyeCenter[0] + rightEyeCenter[0]) // 2),
+                int((leftEyeCenter[1] + rightEyeCenter[1]) // 2),
+            )
 
             # grab the rotation matrix for rotating and scaling the face
             M = cv2.getRotationMatrix2D(center=eyesCenter, angle=angle, scale=scale)
@@ -95,16 +107,16 @@ class FaceAligner:
             # update the translation component of the matrix
             tX = self.desiredFaceWidth * 0.5
             tY = self.desiredFaceHeight * self.desiredLeftEye[1]
-            M[0, 2] += (tX - eyesCenter[0])
-            M[1, 2] += (tY - eyesCenter[1])
+            M[0, 2] += tX - eyesCenter[0]
+            M[1, 2] += tY - eyesCenter[1]
 
             # apply the affine transformation
             (w, h) = (self.desiredFaceWidth, self.desiredFaceHeight)
-            output = cv2.warpAffine(image, M, (w, h),
-                                    flags=cv2.INTER_CUBIC,borderMode=cv2.BORDER_REPLICATE)
+            output = cv2.warpAffine(
+                image, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE
+            )
 
             # return the aligned face
-            return output,True
+            return output, True
         else:
-            return image,False
-
+            return image, False
