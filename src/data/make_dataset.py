@@ -22,6 +22,7 @@ from dotenv import find_dotenv, load_dotenv
 from skimage.util import random_noise
 
 dir = os.path.dirname(__file__)
+sys.path.insert(1, dir)
 from FaceAlignerNetwork import FaceAligner
 
 
@@ -140,6 +141,8 @@ def main():
         spamreader = csv.reader(csvfile, delimiter=";")
         i = 0
         for row in spamreader:
+            if i == 0:
+                print(row[0],row[19],row[20])
             if i > 0:
                 load_image = _face_alignment(os.path.join(img_path, row[0] + ".jpg"))
                 data_image.append(load_image)
@@ -155,7 +158,7 @@ def main():
                 # counter = counter + 1
 
             i = i + 1
-            if i == 101:
+            if i == 100: #max size of the selfie_reduced dataset is 101
                 break
 
     h5_path = os.path.join(filename_processed, "selfie_reduced.h5")
