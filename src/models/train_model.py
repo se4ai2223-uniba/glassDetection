@@ -1,4 +1,3 @@
-# pylint: disable=f-string-without-interpolation
 # pylint: disable=missing-module-docstring
 # Caricare le librerie
 
@@ -9,16 +8,10 @@ import mlflow
 import mlflow.keras
 import numpy as np
 import tensorflow as tf
-from sklearn.model_selection import train_test_split
 from keras import Sequential
-from keras.layers import (
-    BatchNormalization,
-    Conv2D,
-    Dense,
-    Dropout,
-    Flatten,
-    MaxPooling2D,
-)
+from keras.layers import (BatchNormalization, Conv2D, Dense, Dropout, Flatten,
+                          MaxPooling2D)
+from sklearn.model_selection import train_test_split
 
 # ML FLOW PARAMS
 # from getpass import getpass
@@ -31,7 +24,7 @@ os.environ["MLFLOW_TRACKING_PASSWORD"] = "ddec1d9afd9f6c362203803b1cee472f028929
 # os.environ['MLFLOW_TRACKING_PROJECTNAME'] = input('Enter your DAGsHub project name: ')
 os.environ["MLFLOW_TRACKING_PROJECTNAME"] = "glassDetection"
 mlflow.set_tracking_uri(
-    f"https://dagshub.com/"
+    "https://dagshub.com/"
     + os.environ["MLFLOW_TRACKING_USERNAME"]
     + "/"
     + os.environ["MLFLOW_TRACKING_PROJECTNAME"]
@@ -141,7 +134,16 @@ model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(
 
 
 glasses_model.summary()
-mlflow.tensorflow.autolog()
+mlflow.tensorflow.autolog(
+    log_models=True,
+    registered_model_name="GlassDect",
+    disable=False,
+    exclusive=False,
+    disable_for_unsupported_versions=False,
+    silent=False,
+    log_input_examples=False,
+    log_model_signatures=False,
+)
 
 # FIT THE MODEL
 glasses_model.fit(
@@ -153,3 +155,5 @@ glasses_model.fit(
     validation_data=(X_valid, y_valid),
     callbacks=[callback, model_checkpoint_callback_glasses],
 )
+mlflow.end_run()
+print("End procedure")

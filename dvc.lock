@@ -6,38 +6,41 @@ stages:
     - path: data/Selfie_reduced/raw/Selfie-dataset.zip
       md5: 59d2a5f97629becbdc316938a2650fd8
       size: 3649634
+    - path: src/data/FaceAlignerNetwork.py
+      md5: 252227a157291c2b3dc662b071a6a012
+      size: 4441
     - path: src/data/make_dataset.py
-      md5: 4e2ebff0997351839f48748d256d4cf9
-      size: 5743
+      md5: cdb6f3ad9c704fe0084cd15ea59fa294
+      size: 5868
     outs:
     - path: data/Selfie_reduced/processed
-      md5: 0877afcca793cd5d29beeb4caff1d639.dir
+      md5: f789a3492f6711cd0ef520dc5dfdb528.dir
       size: 30765359
       nfiles: 103
   train:
     cmd: python -m src.models.train_model
     deps:
     - path: data/Selfie_reduced/processed/selfie_reduced.h5
-      md5: fe164fd9773ef20e72e40bef878d441b
+      md5: 4b7a86659a887d8121199ece8dd7e39d
       size: 21490753
     - path: src/models/train_model.py
-      md5: 21578401638c15893dbbdaac24829a85
-      size: 4617
+      md5: 9dd66d1912b50bd16e4e95be0110024b
+      size: 4262
     outs:
     - path: models/CNN/
-      md5: 2c28bcd8cbeb4ac120f44b9241c303fe.dir
+      md5: 0c185dff539a0559b25f47362ec88342.dir
       size: 12460394
       nfiles: 4
   evaluation:
     cmd: python -m src.models.predict_model
     deps:
     - path: data/Selfie_reduced/processed/selfie_reduced.h5
-      md5: fe164fd9773ef20e72e40bef878d441b
+      md5: 4b7a86659a887d8121199ece8dd7e39d
       size: 21490753
     - path: models/CNN/
-      md5: 2c28bcd8cbeb4ac120f44b9241c303fe.dir
+      md5: 0c185dff539a0559b25f47362ec88342.dir
       size: 12460394
       nfiles: 4
     - path: src/models/predict_model.py
-      md5: b4b1cbbbcebb778449736d80758cd63a
-      size: 4893
+      md5: 0a144f6763053dd254e0acf392e588ac
+      size: 1527

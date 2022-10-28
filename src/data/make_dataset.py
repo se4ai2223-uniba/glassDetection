@@ -5,13 +5,10 @@
 # -*- coding: utf-8 -*-
 import csv
 import logging
-
-# move files
 import os
 import random
 import sys
 import zipfile
-from fileinput import filename
 from pathlib import Path
 
 import cv2
@@ -142,7 +139,7 @@ def main():
         i = 0
         for row in spamreader:
             if i == 0:
-                print(row[0],row[19],row[20])
+                print(row[0], row[19], row[20])
             if i > 0:
                 load_image = _face_alignment(os.path.join(img_path, row[0] + ".jpg"))
                 data_image.append(load_image)
@@ -158,7 +155,7 @@ def main():
                 # counter = counter + 1
 
             i = i + 1
-            if i == 100: #max size of the selfie_reduced dataset is 101
+            if i == 100:  # max size of the selfie_reduced dataset is 101
                 break
 
     h5_path = os.path.join(filename_processed, "selfie_reduced.h5")
