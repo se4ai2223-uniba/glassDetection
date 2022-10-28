@@ -97,18 +97,17 @@ def _img_augmentation(img):
     return augmented_imgs
 
 
-def _face_alignment(path):
+def _face_alignment(img):
 
     IMG_SIZE = 227
     KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
-    load_image = cv2.imread(path)
     face_aligner = FaceAligner(desiredLeftEye=(0.37, 0.28), desiredFaceWidth=IMG_SIZE)
-    grey_image = cv2.cvtColor(load_image, cv2.COLOR_BGR2GRAY)
-    load_image, _ = face_aligner.align(grey_image, load_image)
-    load_image = cv2.filter2D(src=load_image, ddepth=-1, kernel=KERNEL)
-    load_image = cv2.resize(load_image, (IMG_SIZE, IMG_SIZE))
-    return load_image
+    grey_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img, _ = face_aligner.align(grey_image, img)
+    img = cv2.filter2D(src=img, ddepth=-1, kernel=KERNEL)
+    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+    return img
 
 
 def main():
@@ -141,7 +140,8 @@ def main():
             if i == 0:
                 print(row[0], row[19], row[20])
             if i > 0:
-                load_image = _face_alignment(os.path.join(img_path, row[0] + ".jpg"))
+                load_image = cv2.imread(os.path.join(img_path, row[0] + ".jpg"))
+                load_image = _face_alignment(load_image)
                 data_image.append(load_image)
                 data_label1.append(int(row[19]))
                 data_label2.append(int(row[20]))
@@ -155,7 +155,7 @@ def main():
                 # counter = counter + 1
 
             i = i + 1
-            if i == 100:  # max size of the selfie_reduced dataset is 101
+            if i == 101:  # max size of the selfie_reduced dataset is 101
                 break
 
     h5_path = os.path.join(filename_processed, "selfie_reduced.h5")
