@@ -124,3 +124,6 @@ mlflow.tensorflow.autolog(log_models=True, registered_model_name="GlassDect",dis
 # FIT THE MODEL
 glasses_model.fit(x=X_train, y=y_train, batch_size=32, epochs=1, verbose=1, validation_data=(
     X_valid, y_valid), callbacks=[callback, model_checkpoint_callback_glasses])
+
+mlflow.end_run()
+print("End procedure")

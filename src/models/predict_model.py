@@ -1,4 +1,5 @@
 # Caricare le librerie
+import os
 import h5py
 import mlflow
 import mlflow.keras
@@ -6,6 +7,22 @@ import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix
 from keras.models import load_model
 
+
+# ML FLOW PARAMS
+# from getpass import getpass
+
+#os.environ['MLFLOW_TRACKING_USERNAME'] = input('Enter your DAGsHub username: ')
+os.environ['MLFLOW_TRACKING_USERNAME'] = "GaetanoDibenedetto"
+#os.environ['MLFLOW_TRACKING_PASSWORD'] = getpass('Enter your DAGsHub access token: ')
+
+os.environ['MLFLOW_TRACKING_PASSWORD'] = "ddec1d9afd9f6c362203803b1cee472f02892972"
+#os.environ['MLFLOW_TRACKING_PROJECTNAME'] = input('Enter your DAGsHub project name: ')
+os.environ['MLFLOW_TRACKING_PROJECTNAME'] = "glassDetection"
+mlflow.set_tracking_uri(f'https://dagshub.com/' +
+                        os.environ['MLFLOW_TRACKING_USERNAME'] + '/'
+                        + os.environ['MLFLOW_TRACKING_PROJECTNAME'] + '.mlflow')
+
+mlflow.start_run()
 
 
 with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", 'r') as data_aug:
@@ -53,5 +70,10 @@ accuracy_glasses = accuracy_score(y_test, model_predictions)
 print("accuracy")
 print(accuracy_glasses)
 mlflow.log_metric("testset_accuracy", accuracy_glasses)
+
+run_id = mlflow.last_active_run().info.run_id
+artifacts = mlflow.artifacts.download_artifacts(CHECKPOINT_FILEPATH_GLASSES)
+
+mlflow.sklearn.log_model(best_model_glasses, artifacts, registered_model_name="GlassDect")
 
 mlflow.end_run()
