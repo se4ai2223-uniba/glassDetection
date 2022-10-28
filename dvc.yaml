@@ -3,6 +3,7 @@ stages:
     cmd: python -m src.data.make_dataset
     deps:
       - src/data/FaceAlignerNetwork.py
+      - src/models/shape_predictor_5_face_landmarks.dat
       - src/data/make_dataset.py
       - data/Selfie_reduced/raw/Selfie-dataset.zip
     outs:
