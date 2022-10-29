@@ -67,7 +67,7 @@ def _img_augmentation(img):
     augmented_imgs = []
     filp_new_img = np.copy(img)
     rotation_new_img = np.copy(img)
-    brighnes_new_img = np.copy(img)
+    brightness_new_img = np.copy(img)
 
     filp_new_img = _horizontal_flip_pass(img)
     augmented_imgs.append(filp_new_img)
@@ -75,8 +75,8 @@ def _img_augmentation(img):
     rotation_new_img = _rotate_pass(img)
     augmented_imgs.append(rotation_new_img)
 
-    brighnes_new_img = _brightness_shift_pass(img)
-    augmented_imgs.append(brighnes_new_img)
+    brightness_new_img = _brightness_shift_pass(img)
+    augmented_imgs.append(brightness_new_img)
 
     return augmented_imgs
 

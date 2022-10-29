@@ -108,19 +108,11 @@ def test_face_alignment():
 
 def test_img_augmentation():
     imgs_new = _img_augmentation(load_image)
-
+    i = 0
     for img in imgs_new:
-
-        difference = cv2.subtract(img, load_image)
-        b, g, r = cv2.split(difference)
-
-        # NOT WORKING ANYTIME DUE TO THE RANDOM VALUES OF FUNCTIONS
-        # NEW IMAGE CAN BE REALLY SIMILAR
-        assert not (
-            cv2.countNonZero(b) == 0
-            and cv2.countNonZero(g) == 0
-            and cv2.countNonZero(r) == 0
-        )
+        i = i + 1
+        difference = cv2.absdiff(img, load_image)
+        assert np.any(difference)
 
 
 def vertical_horizontal_histogram(img):
