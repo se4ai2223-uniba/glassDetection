@@ -53,26 +53,10 @@ def _brightness_shift_pass(img):
     return img
 
 
-def _contrast_shift_pass(img):
-    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-    l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=random.uniform(0.3, 4), tileGridSize=(8, 8))
-    cl = clahe.apply(l)
-    limg = cv2.merge((cl, a, b))
-    final = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
-    return final
-
-
 def _rotate_pass(img):
     degree = random.randint(-90, 90)
     rotated = imutils.rotate(img, degree)
     return rotated
-
-
-def _translation_pass(img):
-    tx, ty = (random.randint(-20, 20), random.randint(-20, 20))
-    translation_matrix = np.array([[1, 0, tx], [0, 1, ty]], dtype="float32")
-    return cv2.warpAffine(img, translation_matrix, img.shape[:2])
 
 
 def _horizontal_flip_pass(img):
@@ -133,7 +117,7 @@ def main():
 
     csv_path = os.path.join(filename_processed, "selfie_dataset.csv")
     img_path = os.path.join(filename_processed, "images")
-    with open(csv_path) as csvfile:
+    with open(csv_path, encoding="utf-8") as csvfile:
         spamreader = csv.reader(csvfile, delimiter=";")
         i = 0
         for row in spamreader:

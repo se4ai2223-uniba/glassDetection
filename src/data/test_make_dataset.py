@@ -1,33 +1,28 @@
+# pylint: disable=no-member
+# pylint: disable=invalid-name
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+
+
 import csv
-import logging
 import os
-import random
 import sys
 import zipfile
-from pathlib import Path
-from matplotlib import pyplot as plt
-import scipy.signal
-import cv2
-import h5py
-import imutils
-import numpy as np
-from dotenv import find_dotenv, load_dotenv
-from skimage.util import random_noise
 
+import cv2
+import numpy as np
 
 dir = os.path.dirname(__file__)
 sys.path.insert(1, dir)
 from FaceAlignerNetwork import FaceAligner
 from make_dataset import (
     _blur_pass,
-    _noise_pass,
     _brightness_shift_pass,
-    _rotate_pass,
+    _face_alignment,
     _horizontal_flip_pass,
     _img_augmentation,
-    _face_alignment,
-    _contrast_shift_pass,
-    _translation_pass,
+    _noise_pass,
+    _rotate_pass,
 )
 
 
@@ -115,17 +110,56 @@ def test_img_augmentation():
     imgs_new = _img_augmentation(load_image)
 
     for img in imgs_new:
-        # cv2.imshow("img", img)
-        # cv2.waitKey()
-        # cv2.imshow("img", load_image)
-        # cv2.waitKey()
+
         difference = cv2.subtract(img, load_image)
         b, g, r = cv2.split(difference)
+
+        # NOT WORKING ANYTIME DUE TO THE RANDOM VALUES OF FUNCTIONS
+        # NEW IMAGE CAN BE REALLY SIMILAR
         assert not (
             cv2.countNonZero(b) == 0
             and cv2.countNonZero(g) == 0
             and cv2.countNonZero(r) == 0
         )
+
+
+def vertical_horizontal_histogram(img):
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = 255 - gray
+    x_sum = np.sum(gray, axis=1).tolist()
+    y_sum = np.sum(gray, axis=0).tolist()
+    return x_sum, y_sum
+
+
+def test_horizontal_flip_pass():
+    img_new = _horizontal_flip_pass(load_image)
+
+    x_sum_original, y_sum_original = vertical_horizontal_histogram(load_image)
+    x_sum_img_new, y_sum_img_new = vertical_horizontal_histogram(img_new)
+
+    assert np.array_equal(x_sum_original, x_sum_img_new)
+    assert np.array_equal(y_sum_original, y_sum_img_new[::-1])
+
+    x_sum_different_img, y_sum_different_img = vertical_horizontal_histogram(
+        load_image2
+    )
+
+    assert not np.array_equal(x_sum_original, x_sum_different_img)
+    assert not np.array_equal(y_sum_original, y_sum_different_img[::-1])
+    assert not np.array_equal(x_sum_img_new, x_sum_different_img)
+    assert not np.array_equal(x_sum_img_new, y_sum_different_img[::-1])
+
+
+def test_rotate_pass():
+    img_new = _rotate_pass(load_image)
+
+    img_new = cv2.cvtColor(img_new, cv2.COLOR_BGR2GRAY)
+    original_gray = cv2.cvtColor(load_image, cv2.COLOR_BGR2GRAY)
+
+    original_not_black_pixels = cv2.countNonZero(original_gray)
+    new_not_black_pixels = cv2.countNonZero(img_new)
+
+    assert original_not_black_pixels >= new_not_black_pixels
 
 
 IMG_SIZE = 227
@@ -143,7 +177,7 @@ csv_path = os.path.join(filename_processed, "selfie_dataset.csv")
 img_path = os.path.join(filename_processed, "images")
 img_path_test = None
 load_image = None
-with open(csv_path) as csvfile:
+with open(csv_path, encoding="utf-8") as csvfile:
     spamreader = csv.reader(csvfile, delimiter=";")
     i = 0
     j = 15
