@@ -13,7 +13,7 @@ import cv2
 import numpy as np
 
 dir = os.path.dirname(__file__)
-sys.path.insert(1, dir)
+sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
 from FaceAlignerNetwork import FaceAligner
 from make_dataset import (
     _blur_pass,
@@ -163,10 +163,8 @@ def test_rotate_pass():
 
 
 IMG_SIZE = 227
-filename_raw = os.path.join(dir, "..", "..", "data", "Selfie_reduced", "raw")
-filename_processed = os.path.join(
-    dir, "..", "..", "data", "Selfie_reduced", "processed"
-)
+filename_raw = os.path.join(dir, "..", "data", "Selfie_reduced", "raw")
+filename_processed = os.path.join(dir, "..", "data", "Selfie_reduced", "processed")
 sys.path.insert(0, filename_raw)
 
 zip_path = os.path.join(filename_raw, "Selfie-dataset.zip")
