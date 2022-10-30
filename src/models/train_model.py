@@ -85,62 +85,72 @@ mlflow.log_param("validationSetSize", TRAININGSETSIZE)
 
 
 # DEFINING THE MODEL
+def model_creation(X_train, loss, optimizer):
 
-glasses_model = Sequential()
+    glasses_model = Sequential()
 
-glasses_model.add(
-    Conv2D(
-        filters=16, kernel_size=(5, 5), activation="relu", input_shape=X_train[0].shape
+    glasses_model.add(
+        Conv2D(
+            filters=16, kernel_size=(5, 5), activation="relu", input_shape=X_train[0].shape
+        )
     )
-)
-glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
-glasses_model.add(BatchNormalization())
-glasses_model.add(Dropout(0.2))
+    glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
+    glasses_model.add(BatchNormalization())
+    glasses_model.add(Dropout(0.2))
 
-glasses_model.add(Conv2D(filters=32, kernel_size=(5, 5), activation="relu"))
-glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
-glasses_model.add(BatchNormalization())
-glasses_model.add(Dropout(0.2))
+    glasses_model.add(Conv2D(filters=32, kernel_size=(5, 5), activation="relu"))
+    glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
+    glasses_model.add(BatchNormalization())
+    glasses_model.add(Dropout(0.2))
 
-glasses_model.add(Conv2D(filters=64, kernel_size=(5, 5), activation="relu"))
-glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
-glasses_model.add(BatchNormalization())
-glasses_model.add(Dropout(0.2))
+    glasses_model.add(Conv2D(filters=64, kernel_size=(5, 5), activation="relu"))
+    glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
+    glasses_model.add(BatchNormalization())
+    glasses_model.add(Dropout(0.2))
 
-glasses_model.add(Conv2D(filters=64, kernel_size=(5, 5), activation="relu"))
-glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
-glasses_model.add(BatchNormalization())
-glasses_model.add(Dropout(0.2))
+    glasses_model.add(Conv2D(filters=64, kernel_size=(5, 5), activation="relu"))
+    glasses_model.add(MaxPooling2D(pool_size=(2, 2)))
+    glasses_model.add(BatchNormalization())
+    glasses_model.add(Dropout(0.2))
 
-glasses_model.add(Flatten())
-glasses_model.add(Dense(128, activation="relu"))
-glasses_model.add(Dropout(0.5))
-glasses_model.add(Dense(64, activation="relu"))
-glasses_model.add(Dropout(0.5))
-glasses_model.add(Dense(1, activation="sigmoid"))
-
-
-# Fit the model
-glasses_model.compile(
-    loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
-)
+    glasses_model.add(Flatten())
+    glasses_model.add(Dense(128, activation="relu"))
+    glasses_model.add(Dropout(0.5))
+    glasses_model.add(Dense(64, activation="relu"))
+    glasses_model.add(Dropout(0.5))
+    glasses_model.add(Dense(1, activation="sigmoid"))
 
 
-callback = tf.keras.callbacks.EarlyStopping(
-    monitor="val_accuracy", patience=5, verbose=1
-)
+    # Fit the model
+    glasses_model.compile(
+        loss=loss, optimizer=optimizer, metrics=["accuracy"]
+    )
 
-CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+    return glasses_model
 
-model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(
-    filepath=CHECKPOINT_FILEPATH_GLASSES,
-    monitor="val_loss",
-    mode="min",
-    save_best_only=True,
-)
+
+
+# Instantiation of the model
+glasses_model = model_creation(X_train, "binary_crossentropy", "adam")
+
+
+
+# callback = tf.keras.callbacks.EarlyStopping(
+#     monitor="val_accuracy", patience=5, verbose=1
+# )
+
+# CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+
+# model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(
+#     filepath=CHECKPOINT_FILEPATH_GLASSES,
+#     monitor="val_loss",
+#     mode="min",
+#     save_best_only=True,
+# )
 
 
 glasses_model.summary()
+
 mlflow.tensorflow.autolog(
     log_models=True,
     registered_model_name="GlassDect",
@@ -153,17 +163,17 @@ mlflow.tensorflow.autolog(
 )
 
 # FIT THE MODEL
-glasses_model.fit(
-    x=X_train,
-    y=y_train,
-    batch_size=32,
-    epochs=1,
-    verbose=1,
-    validation_data=(X_valid, y_valid),
-    callbacks=[callback, model_checkpoint_callback_glasses],
-)
-mlflow.end_run()
-print("End procedure")
+# glasses_model.fit(
+#     x=X_train,
+#     y=y_train,
+#     batch_size=32,
+#     epochs=1,
+#     verbose=1,
+#     validation_data=(X_valid, y_valid),
+#     callbacks=[callback, model_checkpoint_callback_glasses],
+# )
+# mlflow.end_run()
+# print("End procedure")
 
 # Function for training the model
 def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
@@ -188,4 +198,9 @@ def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
     verbose=verbose,
     validation_data=(X_val, y_val),
     callbacks=[callback_train, model_checkpoint_callback_glasses],
-)
+    )
+
+    mlflow.end_run()
+    print("End procedure")
+
+model_training(glasses_model, X_train, y_train, 32, 1, 1, X_valid, y_valid)

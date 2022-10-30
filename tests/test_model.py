@@ -14,8 +14,13 @@ sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 
 from predict_model import create_test_set
 
-from train_model import create_train_val_sets
+from train_model import create_train_val_sets, model_creation
 
+#Create train and validation set
+X_train, y_train, X_valid, y_valid = create_train_val_sets()
+
+# Create the test set
+X_test, y_test = create_test_set()
 
 # ------ Testing the function for the test set -----
 def test_create_test_set():
@@ -39,14 +44,6 @@ def test_create_test_set():
     assert len(y_train) == len(X_train)
     assert len(y_val) == len(X_val)
 
-
-
-# Create train and validation set
-# X_train, y_train, X_valid, y_valid = create_train_val_sets()
-
-# # Create the test set
-# X_test, y_test = create_test_set()
-# print(len(X_test))
 
 # Loading the CNN
 
