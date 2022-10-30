@@ -53,26 +53,10 @@ def _brightness_shift_pass(img):
     return img
 
 
-def _contrast_shift_pass(img):
-    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
-    l, a, b = cv2.split(lab)
-    clahe = cv2.createCLAHE(clipLimit=random.uniform(0.3, 4), tileGridSize=(8, 8))
-    cl = clahe.apply(l)
-    limg = cv2.merge((cl, a, b))
-    final = cv2.cvtColor(limg, cv2.COLOR_LAB2BGR)
-    return final
-
-
 def _rotate_pass(img):
     degree = random.randint(-90, 90)
     rotated = imutils.rotate(img, degree)
     return rotated
-
-
-def _translation_pass(img):
-    tx, ty = (random.randint(-20, 20), random.randint(-20, 20))
-    translation_matrix = np.array([[1, 0, tx], [0, 1, ty]], dtype="float32")
-    return cv2.warpAffine(img, translation_matrix, img.shape[:2])
 
 
 def _horizontal_flip_pass(img):
@@ -83,7 +67,7 @@ def _img_augmentation(img):
     augmented_imgs = []
     filp_new_img = np.copy(img)
     rotation_new_img = np.copy(img)
-    brighnes_new_img = np.copy(img)
+    brightness_new_img = np.copy(img)
 
     filp_new_img = _horizontal_flip_pass(img)
     augmented_imgs.append(filp_new_img)
@@ -91,24 +75,23 @@ def _img_augmentation(img):
     rotation_new_img = _rotate_pass(img)
     augmented_imgs.append(rotation_new_img)
 
-    brighnes_new_img = _brightness_shift_pass(img)
-    augmented_imgs.append(brighnes_new_img)
+    brightness_new_img = _brightness_shift_pass(img)
+    augmented_imgs.append(brightness_new_img)
 
     return augmented_imgs
 
 
-def _face_alignment(path):
+def _face_alignment(img):
 
     IMG_SIZE = 227
     KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 
-    load_image = cv2.imread(path)
     face_aligner = FaceAligner(desiredLeftEye=(0.37, 0.28), desiredFaceWidth=IMG_SIZE)
-    grey_image = cv2.cvtColor(load_image, cv2.COLOR_BGR2GRAY)
-    load_image, _ = face_aligner.align(grey_image, load_image)
-    load_image = cv2.filter2D(src=load_image, ddepth=-1, kernel=KERNEL)
-    load_image = cv2.resize(load_image, (IMG_SIZE, IMG_SIZE))
-    return load_image
+    grey_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img, _ = face_aligner.align(grey_image, img)
+    img = cv2.filter2D(src=img, ddepth=-1, kernel=KERNEL)
+    img = cv2.resize(img, (IMG_SIZE, IMG_SIZE))
+    return img
 
 
 def main():
@@ -134,14 +117,15 @@ def main():
 
     csv_path = os.path.join(filename_processed, "selfie_dataset.csv")
     img_path = os.path.join(filename_processed, "images")
-    with open(csv_path) as csvfile:
+    with open(csv_path, encoding="utf-8") as csvfile:
         spamreader = csv.reader(csvfile, delimiter=";")
         i = 0
         for row in spamreader:
             if i == 0:
                 print(row[0], row[19], row[20])
             if i > 0:
-                load_image = _face_alignment(os.path.join(img_path, row[0] + ".jpg"))
+                load_image = cv2.imread(os.path.join(img_path, row[0] + ".jpg"))
+                load_image = _face_alignment(load_image)
                 data_image.append(load_image)
                 data_label1.append(int(row[19]))
                 data_label2.append(int(row[20]))
@@ -155,7 +139,7 @@ def main():
                 # counter = counter + 1
 
             i = i + 1
-            if i == 100:  # max size of the selfie_reduced dataset is 101
+            if i == 101:  # max size of the selfie_reduced dataset is 101
                 break
 
     h5_path = os.path.join(filename_processed, "selfie_reduced.h5")
