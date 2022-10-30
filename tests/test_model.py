@@ -1,5 +1,6 @@
 import os
 import h5py
+import sys
 import numpy as np
 import tensorflow as tf
 from keras.layers import (BatchNormalization, Conv2D, Dense, Dropout, Flatten,
@@ -8,53 +9,46 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix
 from keras.models import load_model
 
+dir = os.path.dirname(__file__)
+sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 
-with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
+from predict_model import create_test_set
 
-    X = data_aug["img"][...]
-    aug_wearing_glasses = data_aug["wearing_glasses"][...]
-    aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
-
-y = []
-for i, _ in enumerate(aug_wearing_glasses):
-    if str(aug_wearing_glasses[i]) == "1" or str(aug_wearing_sunglasses[i]) == "1":
-        y.append(1)
-    else:
-        y.append(0)
+from train_model import create_train_val_sets
 
 
-X_train, X_valid, y_train, y_valid = train_test_split(
-    X,
-    y,
-    train_size=0.8,
-    test_size=0.2,
-    random_state=0,
-)
+# ------ Testing the function for the test set -----
+def test_create_test_set():
+    
+    X_test, y_test = create_test_set()
 
-X_train = np.array(X_train)
-X_valid = np.array(X_valid)
-y_train = np.array(y_train)
-y_valid = np.array(y_valid)
+    assert len(X_test) > 0
+    assert len(y_test) > 0
+    assert len(y_test) == len(X_test)
 
 
-with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
+# ------ Testing the function for the train and validation set -----
+def test_create_test_set():
+    
+    X_train, y_train, X_val, y_val = create_train_val_sets()
 
-    X_test = data_aug["img"][...]
-    aug_wearing_glasses = data_aug["wearing_glasses"][...]
-    aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
-
-y_test = []
-for i, _ in enumerate(aug_wearing_glasses):
-    if str(aug_wearing_glasses[i]) == "1" or str(aug_wearing_sunglasses[i]) == "1":
-        y_test.append(1)
-    else:
-        y_test.append(0)
+    assert len(X_train) > 0
+    assert len(y_train) > 0
+    assert len(X_val) > 0
+    assert len(y_val) > 0
+    assert len(y_train) == len(X_train)
+    assert len(y_val) == len(X_val)
 
 
-X_test = np.array(X_test)
-y_test = np.array(y_test)
 
-#---- Loading the CNN----
+# Create train and validation set
+# X_train, y_train, X_valid, y_valid = create_train_val_sets()
+
+# # Create the test set
+# X_test, y_test = create_test_set()
+# print(len(X_test))
+
+# Loading the CNN
 
 CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
 
@@ -66,43 +60,25 @@ best_model_glasses = load_model(CHECKPOINT_FILEPATH_GLASSES)
     # TESTING
 #=================================
 
-def test_model_return_vals():
-    """
-    Tests for the returned values of the modeling function
-    """
+# def test_model_return_vals():
+#     """
+#     Tests for the returned values of the modeling function
+#     """
 
-    model_predictions = best_model_glasses.predict(X_test)
+#     model_predictions = best_model_glasses.predict(X_test)
 
-    # Get int values from predictions
-    model_predictions = model_predictions.round()
+#     # Get int values from predictions
+#     model_predictions = model_predictions.round()
 
-    # Print the accuracy
-    accuracy_glasses = accuracy_score(y_test, model_predictions)
+#     # Print the accuracy
+#     accuracy_glasses = accuracy_score(y_test, model_predictions)
 
-    #=================================
-    # TEST SUITE
-    #=================================
-    # Check returned scores' type
-    assert isinstance(accuracy_glasses, float)
-    # Check returned scores' range
-    assert accuracy_glasses >= 0
-    assert accuracy_glasses <= 1
+#     #=================================
+#     # TEST SUITE
+#     #=================================
+#     # Check returned scores' type
+#     assert isinstance(accuracy_glasses, float)
+#     # Check returned scores' range
+#     assert accuracy_glasses >= 0
+#     assert accuracy_glasses <= 1
 
-def test_wrong_input_raises_assertion():
-    """
-    Tests for various assertion cheks written in the modeling function
-    """
-    filename = 'testing'
-    scores = train_linear_model(X,y, filename=filename)
-
-    #=================================
-    # TEST SUITE
-    #=================================
-    # Test that it handles the case of: X is a string
-    msg = train_linear_model('X',y)
-    assert isinstance(msg, AssertionError)
-    assert msg.args[0] == "X must be a Numpy array"
-    # Test that it handles the case of: y is a string
-    msg = train_linear_model(X,'y')
-    assert isinstance(msg, AssertionError)
-    assert msg.args[0] == "y must be a Numpy array"

@@ -13,6 +13,7 @@ from keras.layers import (BatchNormalization, Conv2D, Dense, Dropout, Flatten,
                           MaxPooling2D)
 from sklearn.model_selection import train_test_split
 
+
 # ML FLOW PARAMS
 # from getpass import getpass
 
@@ -40,32 +41,40 @@ mlflow.log_param("dataset_used", DATASET_USED)
 RANDOM_STATE = 1
 mlflow.log_param("random_state", RANDOM_STATE)
 
-with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
+def create_train_val_sets():
 
-    X = data_aug["img"][...]
-    aug_wearing_glasses = data_aug["wearing_glasses"][...]
-    aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
+    with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
 
-y = []
-for i, _ in enumerate(aug_wearing_glasses):
-    if str(aug_wearing_glasses[i]) == "1" or str(aug_wearing_sunglasses[i]) == "1":
-        y.append(1)
-    else:
-        y.append(0)
+        X = data_aug["img"][...]
+        aug_wearing_glasses = data_aug["wearing_glasses"][...]
+        aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
+
+    y = []
+    for i, _ in enumerate(aug_wearing_glasses):
+        if str(aug_wearing_glasses[i]) == "1" or str(aug_wearing_sunglasses[i]) == "1":
+            y.append(1)
+        else:
+            y.append(0)
 
 
-X_train, X_valid, y_train, y_valid = train_test_split(
-    X,
-    y,
-    train_size=0.8,
-    test_size=0.2,
-    random_state=RANDOM_STATE,
-)
+    X_train, X_valid, y_train, y_valid = train_test_split(
+        X,
+        y,
+        train_size=0.8,
+        test_size=0.2,
+        random_state=RANDOM_STATE,
+    )
 
-X_train = np.array(X_train)
-X_valid = np.array(X_valid)
-y_train = np.array(y_train)
-y_valid = np.array(y_valid)
+    X_train = np.array(X_train)
+    X_valid = np.array(X_valid)
+    y_train = np.array(y_train)
+    y_valid = np.array(y_valid)
+
+    return X_train, y_train, X_valid, y_valid
+
+
+# Creation of the sets used for the training of the model
+X_train, y_train, X_valid, y_valid = create_train_val_sets()
 
 # Params MLFLOW for datasets
 TRAININGSETSIZE = len(X_train)
@@ -76,8 +85,6 @@ mlflow.log_param("validationSetSize", TRAININGSETSIZE)
 
 
 # DEFINING THE MODEL
-
-# creation of the model
 
 glasses_model = Sequential()
 
@@ -157,3 +164,28 @@ glasses_model.fit(
 )
 mlflow.end_run()
 print("End procedure")
+
+# Function for training the model
+def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
+    
+    callback_train = tf.keras.callbacks.EarlyStopping(
+    monitor="val_accuracy", patience=5, verbose=1)
+
+    CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+
+    model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(
+        filepath=CHECKPOINT_FILEPATH_GLASSES,
+        monitor="val_loss",
+        mode="min",
+        save_best_only=True,
+    )
+
+    model.fit(
+    x=X,
+    y=y,
+    batch_size=batch,
+    epochs=epochs,
+    verbose=verbose,
+    validation_data=(X_val, y_val),
+    callbacks=[callback_train, model_checkpoint_callback_glasses],
+)

@@ -29,23 +29,28 @@ mlflow.set_tracking_uri(
 
 mlflow.start_run()
 
+def create_test_set():
+    
+    with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
 
-with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
+        X_test = data_aug["img"][...]
+        aug_wearing_glasses = data_aug["wearing_glasses"][...]
+        aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
 
-    X_test = data_aug["img"][...]
-    aug_wearing_glasses = data_aug["wearing_glasses"][...]
-    aug_wearing_sunglasses = data_aug["wearing_sunglasses"][...]
-
-y_test = []
-for i, _ in enumerate(aug_wearing_glasses):
-    if str(aug_wearing_glasses[i]) == "1" or str(aug_wearing_sunglasses[i]) == "1":
-        y_test.append(1)
-    else:
-        y_test.append(0)
+    y_test = []
+    for i, _ in enumerate(aug_wearing_glasses):
+        if str(aug_wearing_glasses[i]) == "1" or str(aug_wearing_sunglasses[i]) == "1":
+            y_test.append(1)
+        else:
+            y_test.append(0)
 
 
-X_test = np.array(X_test)
-y_test = np.array(y_test)
+    X_test = np.array(X_test)
+    y_test = np.array(y_test)
+
+    return X_test, y_test
+
+X_test, y_test = create_test_set()
 
 # Params MLFLOW for datasets
 TESTSETSIZE = len(X_test)
