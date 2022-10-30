@@ -14,13 +14,32 @@ sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 
 from predict_model import create_test_set
 
-from train_model import create_train_val_sets, model_creation
+from train_model import create_train_val_sets, model_creation, model_training
 
 #Create train and validation set
 X_train, y_train, X_valid, y_valid = create_train_val_sets()
 
 # Create the test set
 X_test, y_test = create_test_set()
+
+#creatinf the model -- model_creation(X_train, loss, optimizer)
+glasses_model = model_creation(X_train, "binary_crossentropy", "adam")
+
+#fitting the model -- model_training(model, X, y, batch, epochs, verbose, X_val, y_val)
+model_training(glasses_model, X_train, y_train, 32, 1, 1, X_valid, y_valid)
+
+# Loading the CNN
+CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+
+# Load best model from checkpoint
+best_model_glasses = load_model(CHECKPOINT_FILEPATH_GLASSES)
+
+
+
+
+#=================================
+    # TESTING
+#=================================
 
 # ------ Testing the function for the test set -----
 def test_create_test_set():
@@ -45,17 +64,6 @@ def test_create_test_set():
     assert len(y_val) == len(X_val)
 
 
-# Loading the CNN
-
-CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
-
-# Load best model from checkpoint
-best_model_glasses = load_model(CHECKPOINT_FILEPATH_GLASSES)
-
-
-#=================================
-    # TESTING
-#=================================
 
 # def test_model_return_vals():
 #     """

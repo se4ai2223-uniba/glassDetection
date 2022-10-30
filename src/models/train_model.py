@@ -14,33 +14,6 @@ from keras.layers import (BatchNormalization, Conv2D, Dense, Dropout, Flatten,
 from sklearn.model_selection import train_test_split
 
 
-# ML FLOW PARAMS
-# from getpass import getpass
-
-# os.environ['MLFLOW_TRACKING_USERNAME'] = input('Enter your DAGsHub username: ')
-os.environ["MLFLOW_TRACKING_USERNAME"] = "GaetanoDibenedetto"
-# os.environ['MLFLOW_TRACKING_PASSWORD'] = getpass('Enter your DAGsHub access token: ')
-
-os.environ["MLFLOW_TRACKING_PASSWORD"] = "ddec1d9afd9f6c362203803b1cee472f02892972"
-# os.environ['MLFLOW_TRACKING_PROJECTNAME'] = input('Enter your DAGsHub project name: ')
-os.environ["MLFLOW_TRACKING_PROJECTNAME"] = "glassDetection"
-mlflow.set_tracking_uri(
-    "https://dagshub.com/"
-    + os.environ["MLFLOW_TRACKING_USERNAME"]
-    + "/"
-    + os.environ["MLFLOW_TRACKING_PROJECTNAME"]
-    + ".mlflow"
-)
-
-mlflow.start_run()
-
-
-# IMPORT DATASET
-DATASET_USED = "selfie"
-mlflow.log_param("dataset_used", DATASET_USED)
-RANDOM_STATE = 1
-mlflow.log_param("random_state", RANDOM_STATE)
-
 def create_train_val_sets():
 
     with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
@@ -56,6 +29,7 @@ def create_train_val_sets():
         else:
             y.append(0)
 
+    RANDOM_STATE = 1
 
     X_train, X_valid, y_train, y_valid = train_test_split(
         X,
@@ -71,17 +45,6 @@ def create_train_val_sets():
     y_valid = np.array(y_valid)
 
     return X_train, y_train, X_valid, y_valid
-
-
-# Creation of the sets used for the training of the model
-X_train, y_train, X_valid, y_valid = create_train_val_sets()
-
-# Params MLFLOW for datasets
-TRAININGSETSIZE = len(X_train)
-TRAININGSETSIZE = len(X_valid)
-
-mlflow.log_param("trainingSetSize", TRAININGSETSIZE)
-mlflow.log_param("validationSetSize", TRAININGSETSIZE)
 
 
 # DEFINING THE MODEL
@@ -129,52 +92,6 @@ def model_creation(X_train, loss, optimizer):
     return glasses_model
 
 
-
-# Instantiation of the model
-glasses_model = model_creation(X_train, "binary_crossentropy", "adam")
-
-
-
-# callback = tf.keras.callbacks.EarlyStopping(
-#     monitor="val_accuracy", patience=5, verbose=1
-# )
-
-# CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
-
-# model_checkpoint_callback_glasses = tf.keras.callbacks.ModelCheckpoint(
-#     filepath=CHECKPOINT_FILEPATH_GLASSES,
-#     monitor="val_loss",
-#     mode="min",
-#     save_best_only=True,
-# )
-
-
-glasses_model.summary()
-
-mlflow.tensorflow.autolog(
-    log_models=True,
-    registered_model_name="GlassDect",
-    disable=False,
-    exclusive=False,
-    disable_for_unsupported_versions=False,
-    silent=False,
-    log_input_examples=False,
-    log_model_signatures=False,
-)
-
-# FIT THE MODEL
-# glasses_model.fit(
-#     x=X_train,
-#     y=y_train,
-#     batch_size=32,
-#     epochs=1,
-#     verbose=1,
-#     validation_data=(X_valid, y_valid),
-#     callbacks=[callback, model_checkpoint_callback_glasses],
-# )
-# mlflow.end_run()
-# print("End procedure")
-
 # Function for training the model
 def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
     
@@ -203,4 +120,64 @@ def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
     mlflow.end_run()
     print("End procedure")
 
-model_training(glasses_model, X_train, y_train, 32, 1, 1, X_valid, y_valid)
+
+def main():
+
+    # ML FLOW PARAMS
+    # from getpass import getpass
+
+    # os.environ['MLFLOW_TRACKING_USERNAME'] = input('Enter your DAGsHub username: ')
+    os.environ["MLFLOW_TRACKING_USERNAME"] = "GaetanoDibenedetto"
+    # os.environ['MLFLOW_TRACKING_PASSWORD'] = getpass('Enter your DAGsHub access token: ')
+
+    os.environ["MLFLOW_TRACKING_PASSWORD"] = "ddec1d9afd9f6c362203803b1cee472f02892972"
+    # os.environ['MLFLOW_TRACKING_PROJECTNAME'] = input('Enter your DAGsHub project name: ')
+    os.environ["MLFLOW_TRACKING_PROJECTNAME"] = "glassDetection"
+    mlflow.set_tracking_uri(
+        "https://dagshub.com/"
+        + os.environ["MLFLOW_TRACKING_USERNAME"]
+        + "/"
+        + os.environ["MLFLOW_TRACKING_PROJECTNAME"]
+        + ".mlflow"
+    )
+
+    mlflow.start_run()
+
+
+    # IMPORT DATASET
+    DATASET_USED = "selfie"
+    mlflow.log_param("dataset_used", DATASET_USED)
+    RANDOM_STATE = 1
+    mlflow.log_param("random_state", RANDOM_STATE)
+
+    # Creation of the sets used for the training of the model
+    X_train, y_train, X_valid, y_valid = create_train_val_sets()
+
+    # Params MLFLOW for datasets
+    TRAININGSETSIZE = len(X_train)
+    TRAININGSETSIZE = len(X_valid)
+
+    mlflow.log_param("trainingSetSize", TRAININGSETSIZE)
+    mlflow.log_param("validationSetSize", TRAININGSETSIZE)
+
+    # Instantiation of the model
+    glasses_model = model_creation(X_train, "binary_crossentropy", "adam")
+
+    glasses_model.summary()
+
+    mlflow.tensorflow.autolog(
+        log_models=True,
+        registered_model_name="GlassDect",
+        disable=False,
+        exclusive=False,
+        disable_for_unsupported_versions=False,
+        silent=False,
+        log_input_examples=False,
+        log_model_signatures=False,
+    )
+
+    model_training(glasses_model, X_train, y_train, 32, 1, 1, X_valid, y_valid)
+
+
+if __name__ == "__main__":
+    main()
