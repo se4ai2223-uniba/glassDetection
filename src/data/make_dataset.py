@@ -139,7 +139,7 @@ def main():
                 # counter = counter + 1
 
             i = i + 1
-            if i == 101:  # max size of the selfie_reduced dataset is 101
+            if i == 100:  # max size of the selfie_reduced dataset is 101
                 break
 
     h5_path = os.path.join(filename_processed, "selfie_reduced.h5")

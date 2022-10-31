@@ -2,7 +2,9 @@
 # pylint: disable=invalid-name
 # pylint: disable=missing-module-docstring
 # pylint: disable=missing-function-docstring
-
+# pylint: disable=wrong-import-position
+# pylint: disable=redefined-builtin
+# pylint: disable=import-error
 
 import csv
 import os
@@ -14,7 +16,6 @@ import numpy as np
 
 dir = os.path.dirname(__file__)
 sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
-from FaceAlignerNetwork import FaceAligner
 from make_dataset import (
     _blur_pass,
     _brightness_shift_pass,
@@ -108,9 +109,9 @@ def test_face_alignment():
 
 def test_img_augmentation():
     imgs_new = _img_augmentation(load_image)
-    i = 0
+    index = 0
     for img in imgs_new:
-        i = i + 1
+        index = index + 1
         difference = cv2.absdiff(img, load_image)
         assert np.any(difference)
 

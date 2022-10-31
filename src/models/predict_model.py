@@ -1,4 +1,7 @@
 # pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+# pylint: disable=invalid-name
+
 # Caricare le librerie
 import os
 import h5py
@@ -8,9 +11,12 @@ import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix
 from keras.models import load_model
 
+
 def create_test_set():
 
-    with h5py.File("./data/Selfie_reduced/processed/selfie_reduced.h5", "r") as data_aug:
+    with h5py.File(
+        "./data/Selfie_reduced/processed/selfie_reduced.h5", "r"
+    ) as data_aug:
 
         X_test = data_aug["img"][...]
         aug_wearing_glasses = data_aug["wearing_glasses"][...]
@@ -23,11 +29,11 @@ def create_test_set():
         else:
             y_test.append(0)
 
-
     X_test = np.array(X_test)
     y_test = np.array(y_test)
 
     return X_test, y_test
+
 
 # Function for computing the predictions of the models
 def compute_predictions(best_model_glasses, X_test):
@@ -39,15 +45,16 @@ def compute_predictions(best_model_glasses, X_test):
 
     return model_predictions
 
+
 def print_confusion_matrix(y_test, model_predictions):
     # Print confusion matrix
     conf_matrix_glasses = confusion_matrix(y_test, model_predictions)
     print("glasses confusion matrix: ")
     print(conf_matrix_glasses)
 
+
 def compute_model_accuracy(y_test, model_predictions):
     return accuracy_score(y_test, model_predictions)
-   
 
 
 def main():
@@ -75,30 +82,29 @@ def main():
     X_test, y_test = create_test_set()
 
     # Params MLFLOW for datasets
-    TESTSETSIZE = len(X_test)
+    testsetsize = len(X_test)
 
-    mlflow.log_param("testSetSize", TESTSETSIZE)
+    mlflow.log_param("testSetSize", testsetsize)
 
     mlflow.tensorflow.autolog()
 
-    CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+    checkpoint_filepath_glasses = "./models/CNN/"
 
     # Load best model from checkpoint
-    best_model_glasses = load_model(CHECKPOINT_FILEPATH_GLASSES)
+    best_model_glasses = load_model(checkpoint_filepath_glasses)
 
-    #compute the predictions
+    # compute the predictions
     model_predictions = compute_predictions(best_model_glasses, X_test)
 
-    #printing the confusion matrix
+    # printing the confusion matrix
     print_confusion_matrix(y_test, model_predictions)
 
-    #compute the model accuracy
+    # compute the model accuracy
     accuracy_glasses = compute_model_accuracy(y_test, model_predictions)
 
     mlflow.log_metric("testset_accuracy", accuracy_glasses)
 
-    run_id = mlflow.last_active_run().info.run_id
-    artifacts = mlflow.artifacts.download_artifacts(CHECKPOINT_FILEPATH_GLASSES)
+    artifacts = mlflow.artifacts.download_artifacts(checkpoint_filepath_glasses)
 
     mlflow.sklearn.log_model(
         best_model_glasses, artifacts, registered_model_name="GlassDect"
