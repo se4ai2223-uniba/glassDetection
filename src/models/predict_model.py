@@ -46,10 +46,8 @@ def print_confusion_matrix(y_test, model_predictions):
     print(conf_matrix_glasses)
 
 def compute_model_accuracy(y_test, model_predictions):
-# Print the accuracy
-    accuracy_glasses = accuracy_score(y_test, model_predictions)
-    print("accuracy")
-    print(accuracy_glasses)
+    return accuracy_score(y_test, model_predictions)
+   
 
 
 def main():

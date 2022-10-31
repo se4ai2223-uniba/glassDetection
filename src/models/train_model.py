@@ -107,7 +107,7 @@ def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
         save_best_only=True,
     )
 
-    model.fit(
+    history = model.fit(
     x=X,
     y=y,
     batch_size=batch,
@@ -119,6 +119,8 @@ def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
 
     mlflow.end_run()
     print("End procedure")
+
+    return history, model
 
 
 def main():
@@ -162,7 +164,7 @@ def main():
 
     # Instantiation of the model
     glasses_model = model_creation(X_train, "binary_crossentropy", "adam")
-
+    
     glasses_model.summary()
 
     mlflow.tensorflow.autolog(
@@ -176,8 +178,9 @@ def main():
         log_model_signatures=False,
     )
 
-    model_training(glasses_model, X_train, y_train, 32, 1, 1, X_valid, y_valid)
+    history,_ = model_training(glasses_model, X_train, y_train, 32, 2, 1, X_valid, y_valid)
 
+    print(history.history['val_loss'])
 
 if __name__ == "__main__":
     main()
