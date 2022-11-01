@@ -1,8 +1,9 @@
+"""Code used to test the model
+"""
 # pylint: disable=invalid-name
 # pylint: disable=wrong-import-position
 # pylint: disable=redefined-builtin
 # pylint: disable=import-error
-# pylint: disable=missing-function-docstring
 
 import os
 import sys
@@ -32,7 +33,8 @@ from make_dataset import (
 
 # ------ Testing the function for the test set -----
 def test_create_test_set():
-
+    """Function used to test the test set
+    """
     img_set, label_set = create_test_set()
 
     assert len(img_set) > 0
@@ -42,7 +44,8 @@ def test_create_test_set():
 
 # ------ Testing the function for the train and validation set -----
 def test_create_train_val_sets():
-
+    """Function for testing the function which creates the validation and train set
+    """
     img_train, label_train, img_val, label_val = create_train_val_sets()
 
     assert len(img_train) > 0
@@ -55,7 +58,8 @@ def test_create_train_val_sets():
 
 # Testing the input given at the model
 def test_input_shape():
-
+    """Function for testing the shape og the input of the model
+    """
     shape1 = X_train.shape
     shape2 = best_model_glasses.input_shape
 
@@ -64,12 +68,15 @@ def test_input_shape():
 
 # test for checking the reduction of the val_loss at each epoch
 def test_reduction_val_loss():
+    """Function for checking the reduction of the val_loss at each epoch
+    """
     assert all(earlier >= later for earlier, later in zip(epoch_loss, epoch_loss[1:]))
 
 
 # testing the overfit on a batch
 def test_overfit_batch():
-
+    """Function for testing the overfit on a batch of data
+    """
     X_batch = X_train[:32]
     y_batch = y_train[:32]
 
@@ -100,7 +107,8 @@ def test_model_return_vals():
 
 # Directional testing for the training
 def test_noise_impact_train():
-
+    """Function for testing that noise in the input affects the train phase of the model
+    """
     accuracy = train_history.history["val_accuracy"]
     accuracy_noise = train_history_noise.history["val_accuracy"]
 
@@ -109,10 +117,9 @@ def test_noise_impact_train():
 
 
 # Directional testing for the test
-
-
 def test_noise_impact_test():
-
+    """Function for testing that noise in the input affects the test phase of the model
+    """
     predicts = compute_predictions(model, X_test)
     predicts_noise = compute_predictions(model_noise, X_test)
 
@@ -125,7 +132,16 @@ def test_noise_impact_test():
 
 
 def create_noise_sets(train, val, test):
+    """Function used to create train, valid and test sets with some noise
 
+    Args:
+        train (array): original train set
+        val (array): original val set
+        test (array): original test set
+
+    Returns:
+        array: the noise versions of the sets
+    """
     train_noise = []
     val_noise = []
     test_noise = []
@@ -150,6 +166,8 @@ def create_noise_sets(train, val, test):
 
 
 def test_invariance_testing():
+    """Function of invariance of the mode, different input same output
+    """
     new_test = []
     new_test.append(X_test[0])
     new_test.append(_noise_pass(X_test[0]))

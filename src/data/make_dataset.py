@@ -1,6 +1,9 @@
+"""
+module that provide an extraction of a zip file of images, extract it,
+process it and save these images with each one attribute related in an .h5 file
+"""
 # pylint: disable=no-member
 # pylint: disable=invalid-name
-# pylint: disable=missing-module-docstring
 
 # -*- coding: utf-8 -*-
 import csv
@@ -24,6 +27,15 @@ from FaceAlignerNetwork import FaceAligner
 
 
 def _blur_pass(img, sigmaX=None):
+    """blurring an image with the gaussian filter
+
+    Args:
+        img ('uint8'): image that we want modify
+        sigmaX (int, optional): standard deviation. Defaults to None.
+
+    Returns:
+        ('uint8'): image that has been modified
+    """
     sx = 0
     if sigmaX is not None:
         sx = sigmaX
@@ -31,11 +43,26 @@ def _blur_pass(img, sigmaX=None):
 
 
 def _noise_pass(img):
+    """adding noise to a image
+
+    Args:
+        img ('uint8'): image that we want modify
+    Returns:
+        ('uint8'): image that has been modified
+    """
     float_img = random_noise(img, var=random.randrange(1, 11) * 0.002)
     return np.array(255 * float_img, dtype="uint8")
 
 
 def _brightness_shift_pass(img):
+    """change the brightness value of an image in the domain of [(]-80, 80]
+
+    Args:
+         img ('uint8'): image that we want modify
+
+    Returns:
+        ('uint8'): image that has been modified
+    """
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     h, s, v = cv2.split(hsv)
     val = 0
@@ -54,16 +81,43 @@ def _brightness_shift_pass(img):
 
 
 def _rotate_pass(img):
+    """rotation with a random degree in the domain of [-90°;+90°]
+
+    Args:
+        img ('uint8'): image that we want rotate
+
+    Returns:
+        'uint8': cv2 image rotated
+    """
     degree = random.randint(-90, 90)
     rotated = imutils.rotate(img, degree)
     return rotated
 
 
 def _horizontal_flip_pass(img):
+    """flip an image in the horizontal direction (left-right)
+
+    Args:
+        img ('uint8'): image that we want flip respect to the y axis
+
+    Returns:
+        'uint8': cv2 image flipped respect to the y axis
+    """
     return cv2.flip(img, 1)
 
 
 def _img_augmentation(img):
+    """the input image will be modified with different techniques like:
+    - horizontal_flip
+    - rotate of the image with a random degree in the domain of [-90°;+90°]
+    - horizontal_flip
+
+    Args:
+        img ('uint8'): image that we want augment
+
+    Returns:
+        ['uint8']: list of cv2 image containing the aumented images
+    """
     augmented_imgs = []
     filp_new_img = np.copy(img)
     rotation_new_img = np.copy(img)
@@ -82,6 +136,15 @@ def _img_augmentation(img):
 
 
 def _face_alignment(img):
+    """Face Alignment is the technique in which the image
+     of the person is rotated according to the angle of the eyes.
+
+    Args:
+        img ('uint8'): image that we want process
+
+    Returns:
+        'uint8': cv2 image format alligned with eyes angle
+    """
 
     IMG_SIZE = 227
     KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
@@ -154,6 +217,7 @@ def main():
 
 
 if __name__ == "__main__":
+
     LOG_FMT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(level=logging.INFO, format=LOG_FMT)
 
