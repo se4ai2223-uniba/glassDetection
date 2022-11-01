@@ -1,7 +1,9 @@
+"""
+module that tests all functions in the make_dataset module
+"""
+
 # pylint: disable=no-member
 # pylint: disable=invalid-name
-# pylint: disable=missing-module-docstring
-# pylint: disable=missing-function-docstring
 # pylint: disable=wrong-import-position
 # pylint: disable=redefined-builtin
 # pylint: disable=import-error
@@ -28,15 +30,29 @@ from make_dataset import (
 
 
 def test_blur_pass():
+    """Check if an image has blur:
+    If the variance falls below a pre-defined threshold,
+    then the image is considered blurry; otherwise, the image is not blurry.
+    """
     img_new = _blur_pass(load_image)
-    # If the variance falls below a pre-defined threshold,
-    # then the image is considered blurry; otherwise, the image is not blurry.
     var_blurred = cv2.Laplacian(img_new, cv2.CV_64F).var()
     var_original = cv2.Laplacian(load_image, cv2.CV_64F).var()
     assert var_original > var_blurred * 2
 
 
 def hsv_saturation_percentage(img):
+    """
+    Convert image to HSV color space
+    Calculate histogram of saturation channel
+    Calculate percentage of pixels with saturation >= p
+
+    Args:
+        img ('uint8'): cv2 image on which we want check the number of
+        pixels that are below a value of saturations
+
+    Returns:
+        'float': pecentage of pixels with saturation >= p
+    """
     # Convert image to HSV color space
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -49,6 +65,10 @@ def hsv_saturation_percentage(img):
 
 
 def test_noise_pass():
+    """Check if an image has noise respect to the original:
+    comparing the pecentage of pixels with saturation >= p
+
+    """
     img_new = _noise_pass(load_image)
 
     # HSV SATURATION CHECK
@@ -59,6 +79,10 @@ def test_noise_pass():
 
 
 def test_brightness_shift_pass():
+    """Check if an image has only different birghtness than the original:
+    comparing the average intensity of colors
+
+    """
     img_new = _brightness_shift_pass(load_image)
     avg_color_img_new = cv2.mean(cv2.blur(img_new, (5, 5)))
     avg_color_img_original = cv2.mean(cv2.blur(load_image, (5, 5)))
@@ -66,34 +90,11 @@ def test_brightness_shift_pass():
     assert avg_color_img_new != avg_color_img_original
 
 
-def counting_line_peaks(img):
-    # load image, convert to grayscale, threshold it at 127 and invert.
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    img = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)[1]
-
-    # project the page to the side and smooth it with a gaussian
-    projection = np.sum(img, 1)
-    gaussian_filter = np.exp(-(np.arange(-3, 3, 0.1) ** 2))
-    gaussian_filter /= np.sum(gaussian_filter)
-    smooth = np.convolve(projection, gaussian_filter)
-
-    # find the pixel values where we expect lines to start and end
-    mask = smooth > np.average(smooth)
-    edges = np.convolve(mask, [1, -1])
-    line_starts = np.where(edges == 1)[0]
-    line_endings = np.where(edges == -1)[0]
-
-    # count lines with peaks on the lower side
-    lower_peaks = 0
-    for start, end in zip(line_starts, line_endings):
-        line = smooth[start:end]
-        if np.argmax(line) < len(line) / 2:
-            lower_peaks += 1
-
-    return lower_peaks / len(line_starts)
-
-
 def test_face_alignment():
+    """Check if an image is contained in another one,
+    because the face alignment makes a focus on a target
+
+    """
     img = cv2.imread(img_path_test)
     img_new = _face_alignment(img)
 
@@ -108,6 +109,7 @@ def test_face_alignment():
 
 
 def test_img_augmentation():
+    """Checking if the augmentation fucntion makes equal image"""
     imgs_new = _img_augmentation(load_image)
     index = 0
     for img in imgs_new:
@@ -117,6 +119,15 @@ def test_img_augmentation():
 
 
 def vertical_horizontal_histogram(img):
+    """calculating the vertical and horizontal histogram
+
+    Args:
+        img ('uint8'): cv2 image on which we want calculate the histograms
+
+    Returns:
+        ['float']: array containing the value of each point of the histogram on the x
+        ['float']: array containing the value of each point of the histogram on the y
+    """
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     gray = 255 - gray
     x_sum = np.sum(gray, axis=1).tolist()
@@ -125,6 +136,7 @@ def vertical_horizontal_histogram(img):
 
 
 def test_horizontal_flip_pass():
+    """check if an image is the horizontal flip of another one"""
     img_new = _horizontal_flip_pass(load_image)
 
     x_sum_original, y_sum_original = vertical_horizontal_histogram(load_image)
@@ -144,6 +156,7 @@ def test_horizontal_flip_pass():
 
 
 def test_rotate_pass():
+    """check if an image is the rotation of another one"""
     img_new = _rotate_pass(load_image)
 
     img_new = cv2.cvtColor(img_new, cv2.COLOR_BGR2GRAY)
