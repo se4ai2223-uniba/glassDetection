@@ -2,7 +2,7 @@ import pandas as pd
 import great_expectations as ge
 from great_expectations.dataset import PandasDataset
 
-projects = pd.read_csv("data\Selfie_reduced\processed\selfie_dataset.csv")
+projects = pd.read_csv("data\Selfie_reduced\processed\selfie_dataset.csv", sep=";")
 #tags = pd.read_csv("data/tags.csv")
 df = ge.dataset.PandasDataset(projects)
 print(df.head(5))
@@ -158,4 +158,23 @@ expectation_suite=expectation_suite,
 only_return_failures=True
 )
 )
+
+
+""" coniguration of the batch request parameter for the separator ';',  add this kwargs
+'batch_spec_passthrough': {'reader_options': {'sep': ';'}}
+"""
+
+"""  configuration for a new checkpoint in the yaml file
+validations:
+  - batch_request:
+      datasource_name: selfie_dataset
+      data_connector_name: default_inferred_data_connector_name
+      data_asset_name: selfie_dataset.csv
+      batch_spec_passthrough: 
+          reader_options: 
+              sep: ;
+      data_connector_query:
+        index: -1
+    expectation_suite_name: reduced
+"""
 

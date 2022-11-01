@@ -1,4 +1,4 @@
-name: 50_more_rows
+name: 1_again2
 config_version: 1.0
 template_name:
 module_name: great_expectations.checkpoint
@@ -26,7 +26,7 @@ validations:
       data_asset_name: selfie_dataset.csv
       data_connector_query:
         index: -1
-    expectation_suite_name: first_suite
+    expectation_suite_name: reduced
 profilers: []
 ge_cloud_id:
 expectation_suite_ge_cloud_id:
