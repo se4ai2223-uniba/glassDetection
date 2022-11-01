@@ -1,5 +1,5 @@
-# pylint: disable=missing-module-docstring
-# pylint: disable=missing-function-docstring
+"""Code used to predict and evaluate the model
+"""
 # pylint: disable=invalid-name
 
 # Caricare le librerie
@@ -13,7 +13,11 @@ from keras.models import load_model
 
 
 def create_test_set():
+    """Function used to create the test set
 
+    Returns:
+        array: test set
+    """
     with h5py.File(
         "./data/Selfie_reduced/processed/selfie_reduced.h5", "r"
     ) as data_aug:
@@ -37,6 +41,15 @@ def create_test_set():
 
 # Function for computing the predictions of the models
 def compute_predictions(best_model_glasses, X_test):
+    """Function used to compute the predictions of a model
+
+    Args:
+        best_model_glasses (Sequential): Model used to make the predictions
+        X_test (array): set used for the predictions
+
+    Returns:
+        array: the array of predictions done by the model
+    """
     # Get predictions
     model_predictions = best_model_glasses.predict(X_test)
 
@@ -47,6 +60,12 @@ def compute_predictions(best_model_glasses, X_test):
 
 
 def print_confusion_matrix(y_test, model_predictions):
+    """Function used to print a confusion matrix of the predictions
+
+    Args:
+        y_test (array): labels of the test set
+        model_predictions (array): labels of the predictions done by the mode
+    """
     # Print confusion matrix
     conf_matrix_glasses = confusion_matrix(y_test, model_predictions)
     print("glasses confusion matrix: ")
@@ -54,11 +73,21 @@ def print_confusion_matrix(y_test, model_predictions):
 
 
 def compute_model_accuracy(y_test, model_predictions):
+    """Function used to compute the accuracy of the model
+
+    Args:
+        y_test (array): Label of the test set
+        model_predictions (array): Predictions made by the model
+
+    Returns:
+        float: final accuracy of the model
+    """
     return accuracy_score(y_test, model_predictions)
 
 
 def main():
-
+    """main function of the code
+    """
     # ML FLOW PARAMS
     # from getpass import getpass
 

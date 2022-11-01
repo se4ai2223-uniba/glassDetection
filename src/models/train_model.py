@@ -1,4 +1,5 @@
-# pylint: disable=missing-module-docstring
+"""Code used to create and train the model
+"""
 # pylint: disable=invalid-name
 # Caricare le librerie
 
@@ -22,7 +23,11 @@ from sklearn.model_selection import train_test_split
 
 
 def create_train_val_sets():
+    """This is a function used to create the training and validation set
 
+    Returns:
+        _type_: array
+    """
     with h5py.File(
         "./data/Selfie_reduced/processed/selfie_reduced.h5", "r"
     ) as data_aug:
@@ -58,7 +63,16 @@ def create_train_val_sets():
 
 # DEFINING THE MODEL
 def model_creation(X_train, loss, optimizer):
+    """Function used to create a CNN
 
+    Args:
+        X_train (array): arrays of images
+        loss (string): the loss used by the model
+        optimizer (string): the optimizer used by the model
+
+    Returns:
+        Sequential: return the model created
+    """
     glasses_model = Sequential()
 
     glasses_model.add(
@@ -103,7 +117,21 @@ def model_creation(X_train, loss, optimizer):
 
 # Function for training the model
 def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
+    """Function used to train a CNN
 
+    Args:
+        model (Sequential): The model that we want to train
+        X (array): The training set used for the training
+        y (array): The label of the train set
+        batch (integer): the size of the batch
+        epochs (integer): number of epochs used for the train
+        verbose (integer): the number used for the early stopping
+        X_val (array): the validation set
+        y_val (array): labels of the validation set
+
+    Returns:
+        history, Sequential: return the history and model after the train
+    """
     callback_train = tf.keras.callbacks.EarlyStopping(
         monitor="val_accuracy", patience=5, verbose=1
     )
@@ -130,7 +158,8 @@ def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
 
 
 def main():
-
+    """The main of the code
+    """
     # ML FLOW PARAMS
     # from getpass import getpass
 
