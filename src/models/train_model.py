@@ -21,6 +21,11 @@ from keras.layers import (
 )
 from sklearn.model_selection import train_test_split
 
+dir = os.path.dirname(__file__)
+filename_processed = os.path.join(
+    dir, "..", "..", "data", "Selfie_reduced", "processed"
+)
+
 
 def create_train_val_sets():
     """This is a function used to create the training and validation set
@@ -28,9 +33,9 @@ def create_train_val_sets():
     Returns:
         _type_: array
     """
-    with h5py.File(
-        "./data/Selfie_reduced/processed/selfie_reduced.h5", "r"
-    ) as data_aug:
+    h5_path = os.path.join(filename_processed, "selfie_reduced.h5")
+
+    with h5py.File(h5_path, "r") as data_aug:
 
         X = data_aug["img"][...]
         aug_wearing_glasses = data_aug["wearing_glasses"][...]
@@ -158,8 +163,7 @@ def model_training(model, X, y, batch, epochs, verbose, X_val, y_val):
 
 
 def main():
-    """The main of the code
-    """
+    """The main of the code"""
     # ML FLOW PARAMS
     # from getpass import getpass
 
