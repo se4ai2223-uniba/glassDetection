@@ -11,6 +11,11 @@ import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix
 from keras.models import load_model
 
+dir = os.path.dirname(__file__)
+filename_processed = os.path.join(
+    dir, "..", "..", "data", "Selfie_reduced", "processed"
+)
+
 
 def create_test_set():
     """Function used to create the test set
@@ -18,9 +23,9 @@ def create_test_set():
     Returns:
         array: test set
     """
-    with h5py.File(
-        "./data/Selfie_reduced/processed/selfie_reduced.h5", "r"
-    ) as data_aug:
+    h5_path = os.path.join(filename_processed, "selfie_reduced.h5")
+
+    with h5py.File(h5_path, "r") as data_aug:
 
         X_test = data_aug["img"][...]
         aug_wearing_glasses = data_aug["wearing_glasses"][...]
@@ -86,8 +91,7 @@ def compute_model_accuracy(y_test, model_predictions):
 
 
 def main():
-    """main function of the code
-    """
+    """main function of the code"""
     # ML FLOW PARAMS
     # from getpass import getpass
 
