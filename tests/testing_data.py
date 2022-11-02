@@ -1,6 +1,12 @@
+""" Code for testing the data
+"""
+# pylint: disable=import-error
+# pylint: disable= anomalous-backslash-in-string
+# pylint: disable= pointless-string-statement
+
 import pandas as pd
 import great_expectations as ge
-from great_expectations.dataset import PandasDataset
+#from great_expectations.dataset import PandasDataset
 
 projects = pd.read_csv("data\Selfie_reduced\processed\selfie_dataset.csv", sep=";")
 #tags = pd.read_csv("data/tags.csv")
@@ -9,52 +15,56 @@ print(df.head(5))
 
 
 # Presence of specific features
-df.expect_table_columns_to_match_ordered_list(column_list=["image_name","popularity_score","partial_faces", "is_female", "baby", "child", "teenager", "youth", "middle_age", "senior",
-            "white", "black", "asian", "oval_face", "round_face", "heart_face", "smiling", "mouth_open", "frowning", "wearing_glasses", "wearing_sunglasses", "wearing_lipstick", 
-            "tongue_out", "duck_face", "black_hair", "blond_hair", "brown_hair", "red_hair", "curly_hair", "straight_hair", "braid_hair", "showing_cellphone", "using_earphone",
+df.expect_table_columns_to_match_ordered_list(column_list=
+            ["image_name","popularity_score","partial_faces",
+            "is_female", "baby", "child", "teenager", "youth", "middle_age", "senior",
+            "white", "black", "asian", "oval_face", "round_face", "heart_face", "smiling",
+            "mouth_open", "frowning", "wearing_glasses", "wearing_sunglasses", "wearing_lipstick",
+            "tongue_out", "duck_face", "black_hair", "blond_hair", "brown_hair", "red_hair",
+            "curly_hair", "straight_hair", "braid_hair", "showing_cellphone", "using_earphone",
             "using_mirror", "braces", "wearing_hat", "harsh_lighting", "dim_lighting"
 ])
 
 
 # Missing values
 df.expect_column_values_to_not_be_null(
-    column="image_name", 
+    column="image_name",
     column="popularity_score",
-    column="partial_faces", 
-    column="is_female", 
-    column="baby", 
-    column="child", 
-    column="teenager", 
-    column="youth", 
-    column="middle_age", 
-    column="senior", 
-    column= "white", 
-    column="black", 
-    column="asian", 
-    column="oval_face", 
-    column="round_face", 
-    column="heart_face", 
-    column="smiling", 
-    column="mouth_open", 
-    column="frowning", 
-    column="wearing_glasses", 
-    column="wearing_sunglasses", 
-    column="wearing_lipstick", 
-    column="tongue_out", 
+    column="partial_faces",
+    column="is_female",
+    column="baby",
+    column="child",
+    column="teenager",
+    column="youth",
+    column="middle_age",
+    column="senior",
+    column= "white",
+    column="black",
+    column="asian",
+    column="oval_face",
+    column="round_face",
+    column="heart_face",
+    column="smiling",
+    column="mouth_open",
+    column="frowning",
+    column="wearing_glasses",
+    column="wearing_sunglasses",
+    column="wearing_lipstick",
+    column="tongue_out",
     column="duck_face",
     column="black_hair",
-    column="blond_hair", 
-    column="brown_hair", 
+    column="blond_hair",
+    column="brown_hair",
     column="red_hair",
-    column="curly_hair", 
-    column="straight_hair", 
-    column="braid_hair", 
-    column="showing_cellphone", 
-    column="using_earphone", 
-    column="using_mirror", 
-    column="braces", 
-    column="wearing_hat", 
-    column="harsh_lighting", 
+    column="curly_hair",
+    column="straight_hair",
+    column="braid_hair",
+    column="showing_cellphone",
+    column="using_earphone",
+    column="using_mirror",
+    column="braces",
+    column="wearing_hat",
+    column="harsh_lighting",
     column="dim_lighting")
 
 # Unique values
@@ -160,21 +170,22 @@ only_return_failures=True
 )
 
 
-""" coniguration of the batch request parameter for the separator ';',  add this kwargs
-'batch_spec_passthrough': {'reader_options': {'sep': ';'}}
+"""
+    coniguration of the batch request parameter for the separator ';',  add this kwargs
+    'batch_spec_passthrough': {'reader_options': {'sep': ';'}}
 """
 
-"""  configuration for a new checkpoint in the yaml file
-validations:
+"""
+    configuration for a new checkpoint in the yaml file
+    validations:
   - batch_request:
       datasource_name: selfie_dataset
       data_connector_name: default_inferred_data_connector_name
       data_asset_name: selfie_dataset.csv
-      batch_spec_passthrough: 
-          reader_options: 
+      batch_spec_passthrough:
+          reader_options:
               sep: ;
       data_connector_query:
         index: -1
     expectation_suite_name: reduced
 """
-

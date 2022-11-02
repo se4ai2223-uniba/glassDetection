@@ -87,3 +87,6 @@ mlruns/
 
 # Mypy cache
 .mypy_cache/
+
+#models
+tests/models

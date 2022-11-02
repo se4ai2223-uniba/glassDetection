@@ -190,10 +190,10 @@ X_test, y_test = create_test_set()
 # Create a noise train and val set
 X_train_noise, X_valid_noise, X_test_noise = create_noise_sets(X_train, X_valid, X_test)
 
-# creatinf the model -- model_creation(X_train, loss, optimizer)
+# creating the model -- model_creation(X_train, loss, optimizer)
 glasses_model = model_creation(X_train, "binary_crossentropy", "adam")
 
-glasses_model_noise = model_creation(X_train, "binary_crossentropy", "adam")
+glasses_model_noise = model_creation(X_train_noise, "binary_crossentropy", "adam")
 
 # fitting the model -- model_training(model, X, y, batch, epochs, verbose, X_val, y_val)
 history, _ = model_training(glasses_model, X_train, y_train, 32, 2, 1, X_valid, y_valid)
