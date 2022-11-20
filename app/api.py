@@ -18,6 +18,8 @@ from fastapi import Depends, FastAPI, File, Request, Response, UploadFile
 from keras.models import load_model
 from PIL import Image
 
+from src.data.make_dataset import _face_alignment
+
 dir = os.path.dirname(__file__)
 sys.path.insert(1, os.path.join(dir))
 from schemas import PredictPayload
@@ -150,31 +152,29 @@ async def prediction_route(
         }
 
     content = image
-    pil_image = Image.open(io.BytesIO(content))
-    pil_image = pil_image.resize((227, 227))
+    nparr = np.fromstring(content, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    cv2.imshow("original", img)
+    cv2.waitKey()
+    img = _face_alignment(img)
+    cv2.imshow("processed", img)
+    cv2.waitKey()
 
-    pil_image = pil_image.convert("RGB")
+    img_list = []
+    img_list.append(img)
+    img_list = np.array(img_list)
 
-    numpy_image = np.array(pil_image) / 255.0
-    # numpy_image = np.expand_dims(numpy_image, axis=0)
-
-    # numpy_image.shape
-
-    img1 = []
-    img1.append(numpy_image)
-    img1 = np.array(img1)
-
-    prediction = best_model_glasses.predict(img1)
+    prediction = best_model_glasses.predict(img_list)
     prediction = prediction.round()
 
     if prediction[0] == 1:
         response = {
-            "message": "You are wearing glasses!",
+            "message": "Glasses detected!",
             "status-code": HTTPStatus.OK,
         }
     else:
         response = {
-            "message": "You are not wearing glasses!",
+            "message": "Glasses not detected!",
             "status-code": HTTPStatus.OK,
         }
 
