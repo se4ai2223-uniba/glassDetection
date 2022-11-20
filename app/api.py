@@ -4,25 +4,27 @@ module that provide an api for the project
 # pylint: disable=protected-access
 # pylint: disable=redefined-builtin
 # pylint: disable=import-error
+# pylint: disable=no-member
+# pylint: disable=wrong-import-order
 
-import io
+
 import os
 import sys
 from datetime import datetime
 from functools import wraps
 from http import HTTPStatus
+
 import cv2
-
 import numpy as np
-from fastapi import Depends, FastAPI, File, Request, Response, UploadFile
+from fastapi import Depends, FastAPI, File, Request, Response
 from keras.models import load_model
-from PIL import Image
-
-from src.data.make_dataset import _face_alignment
 
 dir = os.path.dirname(__file__)
 sys.path.insert(1, os.path.join(dir))
 from schemas import PredictPayload
+
+sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
+from make_dataset import _face_alignment
 
 sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 from predict_model import create_test_set
@@ -85,58 +87,7 @@ def _index(request: Request, response: Response):
     return response
 
 
-@app.post("/models", tags=["Prediction"])
-@construct_response
-# type is the name of the model
-def _predict(request: Request, response: Response):
-    """Classifies Iris flowers based on sepal and petal sizes."""
-
-    # sklearn's `predict()` methods expect a 2D array of shape [n_samples, n_features]
-    # therefore, we need to convert our single data point into a 2D array
-
-    if best_model_glasses:
-
-        prediction = best_model_glasses.predict(img)
-        prediction = prediction.round()
-
-        # we build a response
-
-        response = {
-            "message": HTTPStatus.OK.phrase,
-            "status-code": HTTPStatus.OK,
-            "data": {
-                "message": str(prediction),
-                # "model-type": "CNN",
-                # "prediction": prediction,
-                # "predicted_type": type(prediction),
-            },
-        }
-    else:
-        response = {
-            "message": "Model not found",
-            "status-code": HTTPStatus.BAD_REQUEST,
-        }
-    return response
-
-
-# @app.post("/uploadfile/", tags=["Upload"])
-# @construct_response
-# async def create_upload_file(file: UploadFile = File(...)):
-
-#     if not file:
-#         response = {
-#             "message": "No upload file sent",
-#             "status-code": HTTPStatus.BAD_REQUEST,
-#         }
-#     else:
-#         response = {
-#             "message": str(file.filename),
-#         }
-
-#     return response
-
-
-@app.post("/prediction/", tags=["Prediction"])
+@app.post("/prediction", tags=["Prediction"])
 @construct_response
 async def prediction_route(
     request: Request,
@@ -150,6 +101,7 @@ async def prediction_route(
         error_from_validation = str(image)
         return {
             "message": error_from_validation,
+            "method": request.method,
             "status-code": HTTPStatus.NOT_ACCEPTABLE,
         }
 
@@ -169,11 +121,13 @@ async def prediction_route(
     if prediction[0] == 1:
         response = {
             "message": "Glasses detected!",
+            "method": request.method,
             "status-code": HTTPStatus.OK,
         }
     else:
         response = {
             "message": "Glasses NOT detected!",
+            "method": request.method,
             "status-code": HTTPStatus.OK,
         }
 

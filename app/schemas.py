@@ -1,6 +1,6 @@
+# pylint: disable=no-name-in-module
+
 import io
-from http import HTTPStatus
-from typing import List, Optional, Literal
 
 from pydantic import BaseModel, validator
 from fastapi import UploadFile, File
