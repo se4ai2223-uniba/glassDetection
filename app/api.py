@@ -27,7 +27,9 @@ from schemas import PredictPayload
 sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 from predict_model import create_test_set
 
-checkpoint_filepath_glasses = os.path.join(dir, "..", "models", "CNN")
+checkpoint_filepath_glasses = os.path.join(
+    dir, "..", "models", "finalModelGlassDetection255"
+)
 best_model_glasses = load_model(checkpoint_filepath_glasses)
 
 
@@ -154,11 +156,8 @@ async def prediction_route(
     content = image
     nparr = np.fromstring(content, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    cv2.imshow("original", img)
-    cv2.waitKey()
+
     img = _face_alignment(img)
-    cv2.imshow("processed", img)
-    cv2.waitKey()
 
     img_list = []
     img_list.append(img)
@@ -174,7 +173,7 @@ async def prediction_route(
         }
     else:
         response = {
-            "message": "Glasses not detected!",
+            "message": "Glasses NOT detected!",
             "status-code": HTTPStatus.OK,
         }
 
