@@ -1,4 +1,4 @@
-name: 1_again2
+name: 13_rows_deleted
 config_version: 1.0
 template_name:
 module_name: great_expectations.checkpoint
@@ -24,6 +24,8 @@ validations:
       datasource_name: selfie_dataset
       data_connector_name: default_inferred_data_connector_name
       data_asset_name: selfie_dataset.csv
+      batch_spec_passthrough:
+        reader_options: sep:;
       data_connector_query:
         index: -1
     expectation_suite_name: reduced
