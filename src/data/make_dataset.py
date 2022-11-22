@@ -146,6 +146,9 @@ def _face_alignment(img):
         'uint8': cv2 image format alligned with eyes angle
     """
 
+    if str(type(img)) != "<class 'numpy.ndarray'>":
+        img = cv2.imread(img)
+
     IMG_SIZE = 227
     KERNEL = np.array([[-1, -1, -1], [-1, 9, -1], [-1, -1, -1]])
 

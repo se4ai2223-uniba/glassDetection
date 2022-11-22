@@ -1,0 +1,5 @@
+outs:
+- md5: 7bd5ac3aa2df4e2ee4ef17d9ffd799c7.dir
+  size: 12459388
+  nfiles: 4
+  path: finalModelGlassDetection255
