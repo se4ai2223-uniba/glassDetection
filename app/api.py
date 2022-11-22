@@ -51,8 +51,8 @@ def construct_response(f):
     """Construct a JSON response for an endpoint's results."""
 
     @wraps(f)
-    async def wrap(request: Request, response: Response, *args, **kwargs):
-        results = await f(request, response, *args, **kwargs)
+    def wrap(request: Request, response: Response, *args, **kwargs):
+        results = f(request, response, *args, **kwargs)
 
         # Construct response
 
@@ -79,17 +79,16 @@ def _index(request: Request, response: Response):
     """Root endpoint."""
 
     response = {
-        "message": HTTPStatus.OK.phrase,
+        "message": "Welcome to glasses classifier!",
         "method": request.method,
         "status-code": HTTPStatus.OK,
-        "data": {"message": "Welcome to glasses classifier! Please, read the `/docs`!"},
     }
     return response
 
 
 @app.post("/prediction", tags=["Prediction"])
 @construct_response
-async def prediction_route(
+def prediction_route(
     request: Request,
     response: Response,
     file: PredictPayload = Depends(),
