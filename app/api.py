@@ -86,7 +86,7 @@ def _index(request: Request, response: Response):
     return response
 
 
-@app.post("/prediction", tags=["Prediction"])
+@app.post("/predict", tags=["Predict"])
 @construct_response
 def prediction_route(
     request: Request,
@@ -106,6 +106,7 @@ def prediction_route(
 
     content = image
     nparr = np.fromstring(content, np.uint8)
+    nparr = np.expand_dims(nparr, axis=0)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     img = _face_alignment(img)
