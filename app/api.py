@@ -108,6 +108,7 @@ def prediction_route(
     nparr = np.fromstring(content, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
+    # img = cv2.resize(img, (227, 227))
     img = _face_alignment(img)
 
     img_list = []
