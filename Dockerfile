@@ -8,6 +8,7 @@ RUN pip install -r /app/requirements.txt
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN pip install dlib==19.22
+
 # Copy source code
 COPY . /app
 
