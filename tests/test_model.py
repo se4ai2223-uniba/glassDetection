@@ -64,6 +64,7 @@ def test_input_shape():
 
 
 # test for checking the reduction of the val_loss at each epoch
+@pytest.mark.could_fail
 def test_reduction_val_loss():
     """Function for checking the reduction of the val_loss at each epoch"""
     assert all(earlier >= later for earlier, later in zip(epoch_loss, epoch_loss[1:]))
@@ -158,6 +159,7 @@ def create_noise_sets(train, val, test):
     return train_noise, val_noise, test_noise
 
 
+@pytest.mark.could_fail
 def test_invariance_testing():
     """Function of invariance of the mode, different input same output"""
     new_test = []
