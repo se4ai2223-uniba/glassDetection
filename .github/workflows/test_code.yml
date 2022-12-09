@@ -24,4 +24,4 @@ jobs:
           pip install dlib==19.22
       - name: Test the makedaset with pytest
         run: |
-          pytest tests/test_make_dataset.py
+         pytest tests/ -v -m "not could_fail"
