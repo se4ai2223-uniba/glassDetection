@@ -1,6 +1,10 @@
 name: quality_assurance_workflow
 
-on: push
+on: :
+    paths:
+      - 'app/**'
+      - 'src/**'
+      - 'tests/**'
 
 jobs:
   code-quality-assurance:
