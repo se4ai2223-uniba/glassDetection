@@ -13,7 +13,7 @@ jobs:
       - name: Setup gdrive
         uses: AnimMouse/setup-gdrive@v3
         with:
-          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+          service_account: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
 
       - run: gdrive --service-account gdrive.json about
       - name: Checkout repository
