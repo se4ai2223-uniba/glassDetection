@@ -10,14 +10,9 @@ jobs:
     name: API testing
     runs-on: ubuntu-latest
     steps:
-      - name: Setup gdrive
-        uses: AnimMouse/setup-gdrive@v3
-        with:
-          service_account: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-
-      - run: gdrive --service-account gdrive.json about
       - name: Checkout repository
         uses: actions/checkout@v2
+      - uses: iterative/setup-dvc@v1
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -31,8 +26,6 @@ jobs:
           pip install dvc-gdrive
       - name: download files from DVC
         run: |
-          dvc remote modify remote_datasets gdrive_client_id '1001673720168-k6kpceejq8pqi0r8obvjbl8qg5j8n59o.apps.googleusercontent.com'
-          dvc remote modify remote_datasets gdrive_client_secret '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'
           dvc pull models/finalModelGlassDetection255.dvc
       - name: Test the API with pytest
         run: |
