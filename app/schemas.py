@@ -5,7 +5,7 @@
     Scripts for defining the schemas of the input
 
     Returns:
-        _type_: test6
+        _type_: test7
 """
 import io
 
