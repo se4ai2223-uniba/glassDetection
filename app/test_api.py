@@ -1,3 +1,6 @@
+"""
+    Scripts for testing the api
+"""
 # pylint: disable=protected-access
 # pylint: disable=redefined-builtin
 # pylint: disable=import-error
@@ -32,6 +35,10 @@ model = load_model(checkpoint_filepath_glasses)
 
 def test_image():
 
+    """
+        Function for testing the api
+    """
+
     url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
     path_image = os.path.join(dir, "test_img.jpg")
     data_tag = "maybeImage"
@@ -60,6 +67,8 @@ def test_image():
 
 
 def test_not_image():
+    """Function for testing the input of the user
+    """
 
     url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
     file = os.path.join(dir, "..", "requirements.txt")

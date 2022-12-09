@@ -1,7 +1,12 @@
 # pylint: disable=no-name-in-module
 # pylint: disable=too-few-public-methods
 # pylint: disable=no-self-argument
+"""
+    Scripts for defining the schemas of the input
 
+    Returns:
+        _type_: _description_
+"""
 import io
 
 from pydantic import BaseModel, validator
