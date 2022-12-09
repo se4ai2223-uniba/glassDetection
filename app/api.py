@@ -1,5 +1,4 @@
 """
-
     Module that provide an api for the project
 """
 # pylint: disable=protected-access
