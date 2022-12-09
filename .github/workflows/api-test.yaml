@@ -23,7 +23,10 @@ jobs:
           pip install httpx
           pip install dvc
           pip install dvc-gdrive
-      - name: Test the API with pytest
+      - name: download files from DVC
         run: |
           dvc pull models/finalModelGlassDetection255.dvc
+        env: GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+        - name: Test the API with pytest
+        run: |
           pytest app/
