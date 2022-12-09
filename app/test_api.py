@@ -26,13 +26,14 @@ checkpoint_filepath_glasses = os.path.join(
 )
 model = load_model(checkpoint_filepath_glasses)
 
+
 def test_image():
 
-    url = 'http://127.0.0.1:8000/predict'
-    path_image = os.path.join(dir,'test_img.jpg')
-    dataTag = 'maybeImage'
-    data = {dataTag: open(path_image, 'rb')}
-    response = client.post(url=url, files=data)    
+    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
+    path_image = os.path.join(dir, "test_img.jpg")
+    dataTag = "maybeImage"
+    data = {dataTag: open(path_image, "rb")}
+    response = client.post(url=url, files=data)
 
     img = cv2.imread(path_image)
     img = _face_alignment(img)
@@ -42,29 +43,29 @@ def test_image():
 
     prediction = model.predict(img_list)
     prediction = prediction.round()
-    
+
     assert response.request.method == "POST"
-    assert response.status_code ==  HTTPStatus.OK 
+    assert response.status_code == HTTPStatus.OK
 
     jsonResponse = response.text
-    jsonResponse  = json.loads(jsonResponse)
+    jsonResponse = json.loads(jsonResponse)
 
     if prediction[0] == 1:
         assert jsonResponse["message"] == "Glasses detected!"
     else:
         assert jsonResponse["message"] == "Glasses NOT detected!"
 
-def test_not_image():
-    
-    url = 'http://127.0.0.1:8000/predict'
-    file = os.path.join(dir,'..','requirements.txt')
-    dataTag = 'maybeImage'
-    data = {dataTag: open(file, 'rb')}
-    response = client.post(url=url, files=data)    
 
-    
+def test_not_image():
+
+    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
+    file = os.path.join(dir, "..", "requirements.txt")
+    dataTag = "maybeImage"
+    data = {dataTag: open(file, "rb")}
+    response = client.post(url=url, files=data)
+
     assert response.request.method == "POST"
-    assert response.status_code ==  HTTPStatus.NOT_ACCEPTABLE 
+    assert response.status_code == HTTPStatus.NOT_ACCEPTABLE
     jsonResponse = response.text
-    jsonResponse  = json.loads(jsonResponse)
+    jsonResponse = json.loads(jsonResponse)
     assert jsonResponse["message"] == "Image needed!"
