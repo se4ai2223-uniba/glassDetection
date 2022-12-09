@@ -3,7 +3,8 @@ name: makedataset-test
 on:
   push:
     paths:
-      - 'src/data/'
+      - 'src/'
+      - 'tests/'
 
 jobs:
   api-testing:
