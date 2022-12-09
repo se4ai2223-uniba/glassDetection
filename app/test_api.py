@@ -21,8 +21,8 @@ client = TestClient(app)
 
 dir = os.path.dirname(__file__)
 
-sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
-from make_dataset import _face_alignment
+# sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
+# from make_dataset import _face_alignment
 
 sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 from predict_model import create_test_set
@@ -36,7 +36,7 @@ model = load_model(checkpoint_filepath_glasses)
 def test_image():
 
     """
-        Function for testing the api
+    Function for testing the api
     """
 
     url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
@@ -46,7 +46,8 @@ def test_image():
     response = client.post(url=url, files=data)
 
     img = cv2.imread(path_image)
-    img = _face_alignment(img)
+    img = cv2.resize(img, (227, 227))
+    # img = _face_alignment(img)
     img_list = []
     img_list.append(img)
     img_list = np.array(img_list)
@@ -67,8 +68,7 @@ def test_image():
 
 
 def test_not_image():
-    """Function for testing the input of the user
-    """
+    """Function for testing the input of the user"""
 
     url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
     file = os.path.join(dir, "..", "requirements.txt")
