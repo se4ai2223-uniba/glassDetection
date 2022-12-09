@@ -1,6 +1,7 @@
 name: quality_assurance_workflow
 
-on: :
+on:
+  push:
     paths:
       - 'app/**'
       - 'src/**'
