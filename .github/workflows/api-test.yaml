@@ -25,7 +25,7 @@ jobs:
           pip install dvc-gdrive
       - name: download files from DVC
         env: 
-            GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+            #GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
             GDRIVE_CLIENTID: ${{ secrets.GDRIVE_CLIENTID }}
             GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
         run: |
