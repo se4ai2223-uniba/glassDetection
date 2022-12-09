@@ -26,8 +26,7 @@ jobs:
       - name: download files from DVC
         run: |
           dvc pull models/finalModelGlassDetection255.dvc
-        env: |
-        id: ${{secrets.GDRIVE_CREDENTIALS_DATA }}
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
       - name: Test the API with pytest
         run: |
           pytest app/
