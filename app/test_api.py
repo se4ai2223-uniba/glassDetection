@@ -26,7 +26,6 @@ checkpoint_filepath_glasses = os.path.join(
 )
 model = load_model(checkpoint_filepath_glasses)
 
-
 def test_image():
 
     url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
@@ -50,6 +49,7 @@ def test_image():
     jsonResponse = response.text
     jsonResponse = json.loads(jsonResponse)
 
+
     if prediction[0] == 1:
         assert jsonResponse["message"] == "Glasses detected!"
     else:
@@ -69,3 +69,4 @@ def test_not_image():
     jsonResponse = response.text
     jsonResponse = json.loads(jsonResponse)
     assert jsonResponse["message"] == "Image needed!"
+
