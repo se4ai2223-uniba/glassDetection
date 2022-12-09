@@ -24,13 +24,9 @@ jobs:
           pip install dvc
           pip install dvc-gdrive
       - name: download files from DVC
-        env: 
-            #GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
-            GDRIVE_CLIENTID: ${{ secrets.GDRIVE_CLIENTID }}
-            GDRIVE_CLIENT_SECRET: ${{ secrets.GDRIVE_CLIENT_SECRET }}
         run: |
-          dvc remote modify remote_datasets gdrive_client_id $GDRIVE_CLIENTID
-          dvc remote modify remote_datasets gdrive_client_secret $GDRIVE_CLIENT_SECRET
+          dvc remote modify remote_datasets gdrive_client_id '1001673720168-k6kpceejq8pqi0r8obvjbl8qg5j8n59o.apps.googleusercontent.com'
+          dvc remote modify remote_datasets gdrive_client_secret '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'
           dvc pull models/finalModelGlassDetection255.dvc
       - name: Test the API with pytest
         run: |
