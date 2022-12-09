@@ -12,7 +12,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - uses: iterative/setup-dvc@v1
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -25,8 +24,10 @@ jobs:
           pip install dvc
           pip install dvc-gdrive
       - name: download files from DVC
+        env: 
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
-          dvc pull models/finalModelGlassDetection255.dvc
+          dvc pull -v models/finalModelGlassDetection255.dvc
       - name: Test the API with pytest
         run: |
           pytest app/
