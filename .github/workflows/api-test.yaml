@@ -1,0 +1,26 @@
+name: api_testing_workflow
+
+on:
+  push:
+    paths:
+      - 'app/**'
+
+jobs:
+  api-testing:
+    name: API testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./requirements.txt
+          pip install dlib==19.22
+      - name: Test the API with pytest
+        run: |
+          pytest app/
