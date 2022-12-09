@@ -1,5 +1,5 @@
 """
-    Module that provide an api for the project 
+    Module that provide an api for the project
 """
 # pylint: disable=protected-access
 # pylint: disable=redefined-builtin
