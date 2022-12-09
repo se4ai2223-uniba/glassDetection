@@ -21,8 +21,8 @@ client = TestClient(app)
 
 dir = os.path.dirname(__file__)
 
-# sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
-# from make_dataset import _face_alignment
+sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
+from make_dataset import _face_alignment
 
 sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 from predict_model import create_test_set
@@ -46,8 +46,7 @@ def test_image():
     response = client.post(url=url, files=data)
 
     img = cv2.imread(path_image)
-    img = cv2.resize(img, (227, 227))
-    # img = _face_alignment(img)
+    img = _face_alignment(img)
     img_list = []
     img_list.append(img)
     img_list = np.array(img_list)
