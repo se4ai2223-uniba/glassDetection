@@ -10,6 +10,12 @@ jobs:
     name: API testing
     runs-on: ubuntu-latest
     steps:
+      - name: Setup gdrive
+        uses: AnimMouse/setup-gdrive@v3
+        with:
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
+
+      - run: gdrive --service-account gdrive.json about
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Set up Python 3.9
