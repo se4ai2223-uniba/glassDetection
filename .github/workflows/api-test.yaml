@@ -28,7 +28,7 @@ jobs:
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run: |
           dvc pull -v models/finalModelGlassDetection255.dvc
-          dvc pull -v data\Selfie_reduced\processed\selfie_reduced.h5
+          dvc pull -v data/Selfie_reduced/processed/selfie_reduced.h5
       - name: Test the API with pytest
         run: |
           pytest app/
