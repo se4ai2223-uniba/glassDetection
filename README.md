@@ -1,5 +1,4 @@
-![api-test](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/api-test.yml/badge.svg?event=push)
-
+[![quality_assurance_workflow](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/QA.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/QA.yml)
 
 Glass Detection
 ==============================
