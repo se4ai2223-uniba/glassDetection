@@ -132,25 +132,17 @@ def main():
     # printing the confusion matrix
     print_confusion_matrix(y_test, model_predictions)
 
-    print("1")
-    print("1")
     # compute the model accuracy
     accuracy_glasses = compute_model_accuracy(y_test, model_predictions)
 
-    print("2")
-    print("2")
     mlflow.log_metric("testset_accuracy", accuracy_glasses)
 
-    print("3")
-    print("3")
     artifacts = mlflow.artifacts.download_artifacts(checkpoint_filepath_glasses)
     print(artifacts)
 
-    print("4")
-    print("4")
-    mlflow.sklearn.log_model(
-        best_model_glasses, artifacts, registered_model_name="GlassDect"
-    )
+    # mlflow.sklearn.log_model(
+    #     best_model_glasses, artifacts, registered_model_name="GlassDect"
+    # )
     print("5")
     print("5")
     mlflow.end_run()
