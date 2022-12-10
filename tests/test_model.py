@@ -102,6 +102,7 @@ def test_model_return_vals():
 
 
 # Directional testing for the training
+@pytest.mark.could_fail
 def test_noise_impact_train():
     """Function for testing that noise in the input affects the train phase of the model"""
     accuracy = train_history.history["val_accuracy"]
@@ -194,7 +195,9 @@ history, _ = model_training(glasses_model, X_train, y_train, 32, 2, 1, X_valid, 
 
 epoch_loss = history.history["val_loss"]
 # Loading the CNN
-CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+CHECKPOINT_FILEPATH_GLASSES = os.path.join(
+    dir, "..", "models", "finalModelGlassDetection255"
+)
 
 # Load best model from checkpoint
 best_model_glasses = load_model(CHECKPOINT_FILEPATH_GLASSES)
