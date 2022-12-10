@@ -2,12 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - 'app/**' 
-      - 'models/finalModelGlassDetection255/**'
-    
+  
 jobs:
 
   build:
