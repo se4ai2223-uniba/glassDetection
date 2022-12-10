@@ -1,4 +1,6 @@
-![example workflow](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/api-test.yml/badge.svg?event=push)
+![api-test](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/api-test.yml/badge.svg?event=push)
+
+
 Glass Detection
 ==============================
 
