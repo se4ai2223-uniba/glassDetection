@@ -1,14 +1,14 @@
-name: makedataset-test
+name: test-code
 
 on:
   push:
     paths:
-      - 'src/'
-      - 'tests/'
+      - 'src/**'
+      - 'tests/**'
 
 jobs:
   api-testing:
-    name: Makedataset testing
+    name: pytest on tests folder
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
