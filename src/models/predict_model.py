@@ -144,6 +144,7 @@ def main():
     print("3")
     print("3")
     artifacts = mlflow.artifacts.download_artifacts(checkpoint_filepath_glasses)
+    print(artifacts)
 
     print("4")
     print("4")
