@@ -34,11 +34,6 @@ checkpoint_filepath_glasses = os.path.join(
 )
 best_model_glasses = load_model(checkpoint_filepath_glasses)
 
-
-img_set, label_set = create_test_set()
-img = []
-img.append(img_set[0])
-img = np.array(img)
 # Define application
 app = FastAPI(
     title="Project for glass detection",
