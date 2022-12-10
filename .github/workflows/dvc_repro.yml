@@ -1,0 +1,32 @@
+name: dvc repro
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'data/Selfie_reduced/raw/**'
+
+jobs:
+  api-testing:
+    name: dvc_repro execution
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./requirements.txt
+          pip install dlib==19.22
+      - name: download files from DVC
+        env: 
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+        run: |
+          dvc pull -v data/Selfie_reduced/raw/Selfie-dataset.zip.dvc
+      - name: dvc repro
+        run: |
+         dvc repro

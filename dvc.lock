@@ -4,43 +4,46 @@ stages:
     cmd: python -m src.data.make_dataset
     deps:
     - path: data/Selfie_reduced/raw/Selfie-dataset.zip
-      md5: 59d2a5f97629becbdc316938a2650fd8
-      size: 3649634
+      md5: 44a787c2ef58858923a0f9abc85c2a96
+      size: 3649658
     - path: src/data/FaceAlignerNetwork.py
-      md5: 252227a157291c2b3dc662b071a6a012
-      size: 4441
+      md5: 969aa53a892e8e971c5ee84e928a2030
+      size: 4632
     - path: src/data/make_dataset.py
-      md5: cdb6f3ad9c704fe0084cd15ea59fa294
-      size: 5868
+      md5: e51e5ef8f916994ac9b30812ee1272ef
+      size: 7315
+    - path: src/models/shape_predictor_5_face_landmarks.dat
+      md5: 79db4b6294389d5ec3923c422efad7ec
+      size: 9150489
     outs:
-    - path: data/Selfie_reduced/processed
-      md5: f789a3492f6711cd0ef520dc5dfdb528.dir
-      size: 30765359
+    - path: data/Selfie_reduced/processing
+      md5: dc818811e26a592293ec72793323f238.dir
+      size: 29992414
       nfiles: 103
   train:
     cmd: python -m src.models.train_model
     deps:
-    - path: data/Selfie_reduced/processed/selfie_reduced.h5
-      md5: 4b7a86659a887d8121199ece8dd7e39d
-      size: 21490753
+    - path: data/Selfie_reduced/processing/selfie_reduced.h5
+      md5: 499cfb76132502ab8b615343a479c0c9
+      size: 20717778
     - path: src/models/train_model.py
-      md5: 9dd66d1912b50bd16e4e95be0110024b
-      size: 4262
+      md5: 341a5b4884b3f0d9af0b1c330bab1166
+      size: 6767
     outs:
     - path: models/CNN/
-      md5: 0c185dff539a0559b25f47362ec88342.dir
+      md5: 80021091d3b4a13ab84a6a55aa4a90cc.dir
       size: 12460394
       nfiles: 4
   evaluation:
     cmd: python -m src.models.predict_model
     deps:
-    - path: data/Selfie_reduced/processed/selfie_reduced.h5
-      md5: 4b7a86659a887d8121199ece8dd7e39d
-      size: 21490753
+    - path: data/Selfie_reduced/processing/selfie_reduced.h5
+      md5: 499cfb76132502ab8b615343a479c0c9
+      size: 20717778
     - path: models/CNN/
-      md5: 0c185dff539a0559b25f47362ec88342.dir
+      md5: 80021091d3b4a13ab84a6a55aa4a90cc.dir
       size: 12460394
       nfiles: 4
     - path: src/models/predict_model.py
-      md5: 0a144f6763053dd254e0acf392e588ac
-      size: 1527
+      md5: 37a51ade786c2eb6727c5e5465102348
+      size: 4434
