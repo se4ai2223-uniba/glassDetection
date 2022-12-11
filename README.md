@@ -11,7 +11,8 @@ Glass Detection
 
 [![Docker Image Deployed on Cloud](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml)
 
-[![server_status](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/server_check.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/server_check.yml)(https://yfvpqbuhav.eu-west-1.awsapprunner.com/)
+[![server_status](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/server_check.yml/badge.svg)](https://yfvpqbuhav.eu-west-1.awsapprunner.com/)
+
 
 
 Deploy of a ML (CNN - based) model able to detect subjects wearing glass in photos.
