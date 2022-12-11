@@ -1,5 +1,5 @@
 """
-module that provide an api for the project
+    Module that provide an api for the project
 """
 # pylint: disable=protected-access
 # pylint: disable=redefined-builtin
@@ -26,6 +26,7 @@ from schemas import PredictPayload
 sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
 from make_dataset import _face_alignment
 
+
 sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 from predict_model import create_test_set
 
@@ -34,11 +35,6 @@ checkpoint_filepath_glasses = os.path.join(
 )
 best_model_glasses = load_model(checkpoint_filepath_glasses)
 
-
-img_set, label_set = create_test_set()
-img = []
-img.append(img_set[0])
-img = np.array(img)
 # Define application
 app = FastAPI(
     title="Project for glass detection",
@@ -108,7 +104,6 @@ def prediction_route(
     nparr = np.frombuffer(content, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-    # img = cv2.resize(img, (227, 227))
     img = _face_alignment(img)
 
     img_list = []

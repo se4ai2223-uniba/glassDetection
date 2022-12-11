@@ -1,4 +1,5 @@
-"""Code used to test the model
+"""
+    Code used to test the model
 """
 # pylint: disable=invalid-name
 # pylint: disable=wrong-import-position
@@ -64,6 +65,7 @@ def test_input_shape():
 
 
 # test for checking the reduction of the val_loss at each epoch
+@pytest.mark.could_fail
 def test_reduction_val_loss():
     """Function for checking the reduction of the val_loss at each epoch"""
     assert all(earlier >= later for earlier, later in zip(epoch_loss, epoch_loss[1:]))
@@ -101,6 +103,7 @@ def test_model_return_vals():
 
 
 # Directional testing for the training
+@pytest.mark.could_fail
 def test_noise_impact_train():
     """Function for testing that noise in the input affects the train phase of the model"""
     accuracy = train_history.history["val_accuracy"]
@@ -158,6 +161,7 @@ def create_noise_sets(train, val, test):
     return train_noise, val_noise, test_noise
 
 
+@pytest.mark.could_fail
 def test_invariance_testing():
     """Function of invariance of the mode, different input same output"""
     new_test = []
@@ -192,7 +196,9 @@ history, _ = model_training(glasses_model, X_train, y_train, 32, 2, 1, X_valid, 
 
 epoch_loss = history.history["val_loss"]
 # Loading the CNN
-CHECKPOINT_FILEPATH_GLASSES = "./models/CNN/"
+CHECKPOINT_FILEPATH_GLASSES = os.path.join(
+    dir, "..", "models", "finalModelGlassDetection255"
+)
 
 # Load best model from checkpoint
 best_model_glasses = load_model(CHECKPOINT_FILEPATH_GLASSES)

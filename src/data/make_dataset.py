@@ -1,7 +1,8 @@
 """
 module that provide an extraction of a zip file of images, extract it,
-process it and save these images with each one attribute related in an .h5 file
+process it, and save these images with each one attribute related in an .h5 file
 """
+
 # pylint: disable=no-member
 # pylint: disable=invalid-name
 
@@ -10,6 +11,7 @@ import csv
 import logging
 import os
 import random
+import shutil
 import sys
 import zipfile
 from pathlib import Path
@@ -175,14 +177,17 @@ def main():
     filename_processed = os.path.join(
         dir, "..", "..", "data", "Selfie_reduced", "processed"
     )
+    filename_processing = os.path.join(
+        dir, "..", "..", "data", "Selfie_reduced", "processing"
+    )
     sys.path.insert(0, filename_raw)
 
     zip_path = os.path.join(filename_raw, "Selfie-dataset.zip")
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
-        zip_ref.extractall(filename_processed)
+        zip_ref.extractall(filename_processing)
 
-    csv_path = os.path.join(filename_processed, "selfie_dataset.csv")
-    img_path = os.path.join(filename_processed, "images")
+    csv_path = os.path.join(filename_processing, "selfie_dataset.csv")
+    img_path = os.path.join(filename_processing, "images")
     with open(csv_path, encoding="utf-8") as csvfile:
         spamreader = csv.reader(csvfile, delimiter=";")
         i = 0
@@ -208,13 +213,18 @@ def main():
             if i == 100:  # max size of the selfie_reduced dataset is 101
                 break
 
-    h5_path = os.path.join(filename_processed, "selfie_reduced.h5")
+    h5_path = os.path.join(filename_processing, "selfie_reduced.h5")
     hf = h5py.File(h5_path, "w")
 
     hf.create_dataset("img", data=data_image)
     hf.create_dataset("wearing_glasses", data=data_label1)
     hf.create_dataset("wearing_sunglasses", data=data_label2)
     hf.close()
+
+    shutil.copy(
+        os.path.join(filename_processing, "selfie_reduced.h5"),
+        os.path.join(filename_processed, "selfie_reduced.h5"),
+    )
 
     print("End procedure")
 

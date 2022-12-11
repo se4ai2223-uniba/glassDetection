@@ -138,11 +138,13 @@ def main():
     mlflow.log_metric("testset_accuracy", accuracy_glasses)
 
     artifacts = mlflow.artifacts.download_artifacts(checkpoint_filepath_glasses)
+    print(artifacts)
 
-    mlflow.sklearn.log_model(
-        best_model_glasses, artifacts, registered_model_name="GlassDect"
-    )
-
+    # mlflow.sklearn.log_model(
+    #     best_model_glasses, artifacts, registered_model_name="GlassDect"
+    # )
+    print("5")
+    print("5")
     mlflow.end_run()
 
 

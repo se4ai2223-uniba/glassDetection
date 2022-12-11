@@ -7,17 +7,17 @@ stages:
       - src/data/make_dataset.py
       - data/Selfie_reduced/raw/Selfie-dataset.zip
     outs:
-      - data/Selfie_reduced/processed
+      - data/Selfie_reduced/processing
   train:
     cmd: python -m src.models.train_model
     deps:
       - src/models/train_model.py
-      - data/Selfie_reduced/processed/selfie_reduced.h5
+      - data/Selfie_reduced/processing/selfie_reduced.h5
     outs:
       - models/CNN/
   evaluation:
     cmd: python -m src.models.predict_model
     deps:
       - src/models/predict_model.py
-      - data/Selfie_reduced/processed/selfie_reduced.h5
+      - data/Selfie_reduced/processing/selfie_reduced.h5
       - models/CNN/

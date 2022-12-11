@@ -1,6 +1,17 @@
 Glass Detection
 ==============================
 
+[![quality_assurance_workflow](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/QA.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/QA.yml)
+
+[![api_testing_workflow](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/api-test.yaml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/api-test.yaml)
+
+[![test-code](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/test_code.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/test_code.yml)
+
+[![dvc repro](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml)
+
+[![Docker Image CI](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml)
+
+
 Deploy of a ML (CNN - based) model able to detect subjects wearing glass in photos.
 
 Project Organization

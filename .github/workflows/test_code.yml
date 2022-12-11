@@ -1,0 +1,35 @@
+name: test-code
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+
+jobs:
+  api-testing:
+    name: pytest on tests folder
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - uses: iterative/setup-dvc@v1
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r ./requirements.txt
+          pip install dlib==19.22
+      - name: download files from DVC
+        env: 
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+        run: |
+          dvc pull -v models/finalModelGlassDetection255.dvc
+          dvc pull -v data/Selfie_reduced/processed/selfie_reduced.h5.dvc
+          dvc pull -v data/Selfie_reduced/raw/Selfie-dataset.zip.dvc
+      - name: Test the code with pytest
+        run: |
+         pytest tests/ -v -m "not could_fail"
