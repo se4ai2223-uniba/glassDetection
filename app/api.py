@@ -23,9 +23,9 @@ dir = os.path.dirname(__file__)
 sys.path.insert(1, os.path.join(dir))
 from schemas import PredictPayload
 
-# sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
-# from make_dataset import _face_alignment
-#
+sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
+from make_dataset import _face_alignment
+
 
 sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 from predict_model import create_test_set
@@ -104,8 +104,7 @@ def prediction_route(
     nparr = np.frombuffer(content, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
-    img = cv2.resize(img, (227, 227))
-    # img = _face_alignment(img)
+    img = _face_alignment(img)
 
     img_list = []
     img_list.append(img)
