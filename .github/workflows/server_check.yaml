@@ -1,0 +1,14 @@
+on:
+  schedule:
+    - cron: '15 * * * *'
+
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Make Request to the server
+      uses: fjogeleit/http-request-action@v1
+    - name: test the server
+      run: |
+        pytest tests/test_server.py
