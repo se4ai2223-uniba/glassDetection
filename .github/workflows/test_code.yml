@@ -30,6 +30,6 @@ jobs:
           dvc pull -v models/finalModelGlassDetection255.dvc
           dvc pull -v data/Selfie_reduced/processed/selfie_reduced.h5.dvc
           dvc pull -v data/Selfie_reduced/raw/Selfie-dataset.zip.dvc
-      - name: Test the makedaset with pytest
+      - name: Test the code with pytest
         run: |
          pytest tests/ -v -m "not could_fail"
