@@ -17,8 +17,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install pytest
-          pip install requests
-          pip install http      
+          pip install requests  
       - name: test the server
         run: |
           pytest app/test_server.py
