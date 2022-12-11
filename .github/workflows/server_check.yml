@@ -16,7 +16,9 @@ jobs:
           python-version: 3.9
       - name: Install dependencies
         run: |
-          pip install pytest      
+          pip install pytest
+          pip install requests
+          pip install http      
       - name: test the server
         run: |
           pytest app/test_server.py
