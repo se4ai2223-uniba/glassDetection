@@ -75,7 +75,7 @@ def _index(request: Request, response: Response):
     """Root endpoint."""
 
     response = {
-        "message": "Welcome to glasses classifier!",
+        "message": "Welcome to glasses classifier! Please, read the `/docs`!",
         "method": request.method,
         "status-code": HTTPStatus.OK,
     }

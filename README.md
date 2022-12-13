@@ -38,7 +38,7 @@ Project Organization
     │                         `1.0-jqp-initial-data-exploration`.
     │
     ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
+    │https://github.com/se4ai2223-uniba/glassDetection/pull/22/conflict?name=README.md&ancestor_oid=6fce1eadba2c0cab75559c45d58abca1fb6a85be&base_oid=5c7e710453fb6a8daa5862d792a192aaf9632691&head_oid=df8915b8d0fb1f636de94af9d4770fecea42f4ad
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
     │
