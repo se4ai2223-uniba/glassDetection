@@ -1,4 +1,4 @@
-Glass Detection
+GlassES Detection
 ==============================
 
 [![quality_assurance_workflow](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/QA.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/QA.yml)
