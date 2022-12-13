@@ -1,0 +1,24 @@
+name: server_check
+
+on:
+  schedule:
+    - cron: '15 * * * *'
+
+jobs:
+  deployment:
+    name: server check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          pip install pytest
+          pip install requests  
+      - name: test the server
+        run: |
+          pytest app/test_server.py

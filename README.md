@@ -9,7 +9,10 @@ Glass Detection
 
 [![dvc repro](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml)
 
-[![application CD](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml)
+[![Docker Image Deployed on Cloud](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml)
+
+[![server_status](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/server_check.yml/badge.svg)](https://yfvpqbuhav.eu-west-1.awsapprunner.com/)
+
 
 
 Deploy of a ML (CNN - based) model able to detect subjects wearing glass in photos.
@@ -35,7 +38,7 @@ Project Organization
     │                         `1.0-jqp-initial-data-exploration`.
     │
     ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │
+    │https://github.com/se4ai2223-uniba/glassDetection/pull/22/conflict?name=README.md&ancestor_oid=6fce1eadba2c0cab75559c45d58abca1fb6a85be&base_oid=5c7e710453fb6a8daa5862d792a192aaf9632691&head_oid=df8915b8d0fb1f636de94af9d4770fecea42f4ad
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
     │
