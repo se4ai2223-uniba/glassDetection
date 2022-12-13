@@ -9,7 +9,7 @@ Glass Detection
 
 [![dvc repro](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml)
 
-[![Docker Image CI](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml)
+[![application CD](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml)
 
 
 Deploy of a ML (CNN - based) model able to detect subjects wearing glass in photos.
