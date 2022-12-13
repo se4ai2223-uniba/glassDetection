@@ -2,7 +2,7 @@ name: server_check
 
 on:
   schedule:
-    - cron: '15 * * * *'
+    - cron: '15 * * * 15'
 
 jobs:
   deployment:
