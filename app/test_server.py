@@ -19,8 +19,6 @@ def test_server():
 
     url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/"
     response = requests.get(url=url)
-    print(1)
-    print(response)
 
     assert response.request.method == "GET"
     assert response.status_code == HTTPStatus.OK
