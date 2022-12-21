@@ -2,19 +2,13 @@
 This module contains all the utilities for the initialization of a web app using the gradio library
 """
 from http import HTTPStatus
-import io
 import json
 import os
-import sys
 import time
 
 import requests
 import gradio as gr
-import cv2
-from PIL import Image
-import numpy as np
 from fastapi import FastAPI
-from fastapi import File, UploadFile
 
 CUSTOM_PATH = "/frontend"
 dir = os.path.dirname(__file__)
