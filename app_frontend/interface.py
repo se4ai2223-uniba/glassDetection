@@ -1,6 +1,7 @@
 """
 This module contains all the utilities for the initialization of a web app using the gradio library
 """
+from http import HTTPStatus
 import io
 import json
 import os
@@ -19,11 +20,13 @@ CUSTOM_PATH = "/frontend"
 dir = os.path.dirname(__file__)
 app = FastAPI()
 
+
 @app.get("/")
 def read_main():
     return {"message": "This is the Glasses-detection frontend."}
 
-TITLE = 'Glasses Detection Web App'
+
+TITLE = "Glasses Detection Web App"
 
 DESCRIPTION = """
 <p>
@@ -46,33 +49,30 @@ def classify_image(input_img):
 
     url = "http://localhost:8000/predict"
     data_tag = "maybeImage"
-    img = Image.fromarray(input_img)
-    temp_path=os.path.join(dir,"test")
-    image_path = os.path.join(temp_path,"test_img.jpg")
-    if not os.path.isdir(temp_path):
-        # if the temp_path directory is 
-        # not present then create it.
-        os.makedirs(temp_path)
-    img.save("test_img.jpg")
-    img_load =  open("test_img.jpg", "rb")
+    img_load = open(input_img, "rb")
     data = {data_tag: img_load}
-    response = requests.post(url=url, files=data).content
+    response = requests.post(url=url, files=data)
 
-    json_response = json.loads(response)
-    print(json_response)
-    # if json_response["status-code"] != 200:
-    #     raise ValueError(json_response["message"])
+    json_response = json.loads(response.content)
+    if response.status_code != HTTPStatus.OK:
+        raise ValueError(response.status_code + ": " + json_response["message"])
 
     return json_response["message"]
 
 
 iface = gr.Interface(
-        classify_image,
-        gr.components.Image(label="Input image"),
-        gr.components.Label(num_top_classes=5, label="Output prediction and confidence"),
-        title=TITLE,
-        description=DESCRIPTION,
-        allow_flagging="never")
+    classify_image,
+    gr.components.Image(label="Input image", type="filepath", source="upload"),
+    gr.components.Label(num_top_classes=5, label="Output prediction and confidence"),
+    title=TITLE,
+    description=DESCRIPTION,
+    allow_flagging="never",
+    examples=[
+        os.path.join(os.path.dirname(__file__), "..", "app", "test_img.jpeg"),
+        os.path.join(os.path.dirname(__file__), "..", "app", "test_img.jpg"),
+        os.path.join(os.path.dirname(__file__), "..", "app", "test2.jpg"),
+    ],
+)
 
 iface.dev_mode = False
 iface.config = iface.get_config_file()
