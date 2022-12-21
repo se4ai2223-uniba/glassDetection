@@ -41,7 +41,7 @@ def classify_image(input_img):
     if input_img is None:
         return {}
 
-    url = "http://localhost:8000/predict"
+    url = "http://api:8000/predict"
     data_tag = "maybeImage"
     img_load = open(input_img, "rb")
     data = {data_tag: img_load}
