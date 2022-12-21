@@ -2,7 +2,7 @@
 FROM python:3.9-slim
 
 # Install dependencies
-COPY ./requirements_frontend.txt /app_frontend/requirements_frontend.txt
+COPY ./app_frontend//requirements_frontend.txt /app_frontend/requirements_frontend.txt
 RUN pip install -r /app_frontend/requirements_frontend.txt
 
 
