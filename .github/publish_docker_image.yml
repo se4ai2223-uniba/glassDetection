@@ -1,9 +1,6 @@
 name: Publish Docker image API
 
 on:
-  push:
-    branches:
-      - main
     paths:
       - 'app/**' 
       - 'models/finalModelGlassDetection255/**'
@@ -28,9 +25,6 @@ jobs:
 name: Publish Docker image FRONTEND
 
 on:
-  push:
-    branches:
-      - main
     paths:
       - 'app_frontend/**' 
 
