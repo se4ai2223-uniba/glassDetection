@@ -16,7 +16,7 @@ from http import HTTPStatus
 
 import cv2
 import numpy as np
-from fastapi import Depends, FastAPI, File, Request, Response
+from fastapi import Depends, FastAPI, Request, Response
 from keras.models import load_model
 
 dir = os.path.dirname(__file__)
