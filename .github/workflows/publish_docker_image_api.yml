@@ -18,4 +18,4 @@ jobs:
       - name: Build Docker Images
         run: docker build . --file app/Dockerfile --tag api
       - name: Docker Push
-        run: docker push ${{secrets.DOCKER_USERNAME}}/glassesdetection
+        run: docker push amt2k10/glassesdetection:api
