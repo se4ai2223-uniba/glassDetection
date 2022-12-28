@@ -18,4 +18,4 @@ jobs:
       - name: Build Docker Images
         run: docker compose build frontend
       - name: Docker Push
-        run: docker push amt2k10/glassesdetection:frontend
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/glassesdetection:frontend
