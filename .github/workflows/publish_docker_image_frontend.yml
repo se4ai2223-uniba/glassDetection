@@ -1,9 +1,7 @@
 name: Publish Docker image FRONTEND
 
 on:
-  push:
-    paths:
-      - 'app_frontend/**' 
+  - push
 
 jobs:
   build:
