@@ -1,10 +1,7 @@
 name: Publish Docker image API
 
 on:
-  push:
-    paths:
-      - 'app/**' 
-      - 'models/finalModelGlassDetection255/**'
+  - push
 
 jobs:
   build:
