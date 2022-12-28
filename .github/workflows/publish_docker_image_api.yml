@@ -1,13 +1,14 @@
 name: Publish Docker image API
 
 on:
+  push:
     paths:
       - 'app/**' 
       - 'models/finalModelGlassDetection255/**'
 
 jobs:
   build:
-    runs-one: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
