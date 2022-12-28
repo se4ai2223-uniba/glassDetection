@@ -1,12 +1,13 @@
 name: Publish Docker image FRONTEND
 
 on:
+  push:
     paths:
       - 'app_frontend/**' 
 
 jobs:
   build:
-    runs-one: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
