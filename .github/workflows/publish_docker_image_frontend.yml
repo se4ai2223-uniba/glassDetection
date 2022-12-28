@@ -1,27 +1,3 @@
-name: Publish Docker image API
-
-on:
-    paths:
-      - 'app/**' 
-      - 'models/finalModelGlassDetection255/**'
-
-jobs:
-  build:
-    runs-one: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: docker login
-        env:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          docker login -u $username -p $password
-      - name: Build Docker Images
-        run: docker build . --file app/Dockerfile --tag api
-      - name: Docker Push
-        run: docker push ${{secrets.DOCKER_USERNAME}}/glassesdetection
-
 name: Publish Docker image FRONTEND
 
 on:
