@@ -1,19 +1,19 @@
 name: deploy
 
 on:
-  push:
+  push
   # the 1st condition
-  workflow_run:
-    workflows: ["Publish Docker image API","Publish Docker image FRONTEND"]
-    branches: [main]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Publish Docker image API","Publish Docker image FRONTEND"]
+  #   branches: [main]
+  #   types:
+  #     - completed
 
 jobs:
   deploy-packages:
     name: ubuntu-latest
     # the 2nd condition
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 
@@ -24,10 +24,10 @@ jobs:
             USER_NAME : ${{ secrets.SSH_USERNAME  }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          ssh -o cd f -i private_key ${USER_NAME}@${HOSTNAME} '
 
             #Now we have got the access of EC2 and we will start the deploy .
             cd glassDetection &&
             docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags &&
-            docker compose up
+            # docker compose up
           '
