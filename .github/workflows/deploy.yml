@@ -24,7 +24,7 @@ jobs:
             USER_NAME : ${{ secrets.SSH_USERNAME  }}
         run: |
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o cd f -i private_key ${USER_NAME}@${HOSTNAME} '
+          ssh -o StrictHostKeyChecking=no f -i private_key ${USER_NAME}@${HOSTNAME} '
 
             #Now we have got the access of EC2 and we will start the deploy .
             cd glassDetection &&
