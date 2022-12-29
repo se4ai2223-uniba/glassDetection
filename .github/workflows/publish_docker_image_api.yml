@@ -14,6 +14,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Download model from DVC
+        env: 
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+        run:
+          dvc pull -v models/finalModelGlassDetection255.dvc
+
       - name: docker login
         env:
           username: ${{ secrets.DOCKER_USERNAME }}
