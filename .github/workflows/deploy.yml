@@ -11,16 +11,23 @@ on:
 
 jobs:
   deploy-packages:
-    name: dvc_repro execution
+    name: ubuntu-latest
     # the 2nd condition
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@v0.1.6
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: "amt2k10"
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: "22"
-          script: whoami
+      - uses: appleboy/ssh-action@v0.1.6
+      - name: Deploy in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME : ${{ secrets.SSH_HOST  }}
+            USER_NAME : ${{ secrets.SSH_USERNAME  }}
+                run: |
+                  echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+                  ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+                    #Now we have got the access of EC2 and we will start the deploy .
+                    cd glassdetection &&
+                    docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags &&
+                    docker compose up
+                  '
