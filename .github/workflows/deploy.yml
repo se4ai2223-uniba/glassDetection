@@ -11,8 +11,10 @@ on:
 
 jobs:
   deploy-packages:
+    name: dvc_repro execution
     # the 2nd condition
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
     steps:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
