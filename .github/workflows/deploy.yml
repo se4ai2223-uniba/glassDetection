@@ -1,17 +1,18 @@
 name: deploy
 
 on:
+  push
   # the 1st condition
-  workflow_run:
-    workflows: ["Publish Docker image API","Publish Docker image FRONTEND"]
-    branches: [main]
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: ["Publish Docker image API","Publish Docker image FRONTEND"]
+  #   branches: [main]
+  #   types:
+  #     - completed
 
 jobs:
   deploy-packages:
     # the 2nd condition
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
