@@ -15,11 +15,12 @@ jobs:
     # the 2nd condition
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-  - name: executing remote ssh commands using ssh key
-    uses: appleboy/ssh-action@v0.1.6
-    with:
-      host: ${{ secrets.HOST }}
-      username: amt2k10
-      key: ${{ secrets.KEY }}
-      port: 22
-      script: whoami
+    steps:
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: whoami
