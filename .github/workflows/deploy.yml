@@ -1,7 +1,7 @@
 name: deploy
 
 on:
-  push
+  push:
   # the 1st condition
   workflow_run:
     workflows: ["Publish Docker image API","Publish Docker image FRONTEND"]
