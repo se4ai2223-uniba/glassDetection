@@ -40,3 +40,19 @@ from alibi_detect.cd.tensorflow import preprocess_drift
 
 
 from timeit import default_timer as timer
+
+# Create train and validation set
+X_train, y_train, X_valid, y_valid = create_train_val_sets()
+
+# Create the test set
+X_test, y_test = create_test_set()
+
+# Create a noise train and val set
+X_train_noise, X_valid_noise, x_corr = create_noise_sets(X_train, X_valid, X_test)
+
+# Loading the CNN
+CHECKPOINT_FILEPATH_GLASSES = os.path.join(
+    dir, "models", "finalModelGlassDetection255")
+
+# Load best model from checkpoint
+glasses_model = load_model(CHECKPOINT_FILEPATH_GLASSES)
