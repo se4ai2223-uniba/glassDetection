@@ -32,5 +32,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd glassdetection
-            docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags
-            docker compose up
+            ls
