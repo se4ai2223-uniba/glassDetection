@@ -56,3 +56,38 @@ CHECKPOINT_FILEPATH_GLASSES = os.path.join(
 
 # Load best model from checkpoint
 glasses_model = load_model(CHECKPOINT_FILEPATH_GLASSES)
+
+# define preprocessing function
+preprocess_fn = partial(preprocess_drift, model=glasses_model, batch_size=32)
+
+# initialise drift detector
+cd = MMDDrift(X_test, backend='tensorflow', p_val=.05,
+              preprocess_fn=preprocess_fn, n_permutations=100)
+
+
+labels = ['No!', 'Yes!']
+
+corruption = ['gaussian_noise']
+
+def make_predictions(cd, x_h0, x_corr, corruption):
+    t = timer()
+    preds = cd.predict(x_h0)
+    dt = timer() - t
+    print('No corruption')
+    print('Drift? {}'.format(labels[preds['data']['is_drift']]))
+    print(f'p-value: {preds["data"]["p_val"]:.3f}')
+    print(f'Time (s) {dt:.3f}')
+
+    if isinstance(x_corr, list):
+        for x, c in zip(x_corr, corruption):
+            t = timer()
+            preds = cd.predict(x)
+            dt = timer() - t
+            print('')
+            print(f'Corruption type: {c}')
+            print('Drift? {}'.format(labels[preds['data']['is_drift']]))
+            print(f'p-value: {preds["data"]["p_val"]:.3f}')
+            print(f'Time (s) {dt:.3f}')
+
+
+make_predictions(cd, X_test, x_corr, corruption)
