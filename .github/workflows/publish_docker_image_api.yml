@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Download model from DVC
+        uses: iterative/setup-dvc@v1
         env: 
           GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
         run:
