@@ -52,8 +52,7 @@ jobs:
   deploy-packages:
     needs: [build_api,build_frontend]
     name: deploy on server
-    # the 2nd condition
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 
