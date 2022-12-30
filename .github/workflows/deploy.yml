@@ -1,13 +1,13 @@
 name: deploy
 
 on:
-  push
+  push:
   # the 1st condition
-  # workflow_run:
-  #   workflows: ["Publish Docker image API","Publish Docker image FRONTEND"]
-  #   branches: [main]
-  #   types:
-  #     - completed
+  workflow_run:
+    workflows: ["Publish Docker image API","Publish Docker image FRONTEND"]
+    # branches: [main]
+    types:
+      - completed
 
 jobs:
   deploy-packages:
@@ -17,7 +17,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 
-      - name: Deploy in EC2
+      - name: Pull images in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME : ${{ secrets.SSH_HOST  }}
+            USER_NAME : ${{ secrets.SSH_USERNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+            #Now we have got the access of EC2 and we will start the deploy .
+            docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags
+          '
+
+      - name: Docker compose in EC2
         env:
             PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
             HOSTNAME : ${{ secrets.SSH_HOST  }}
@@ -28,6 +41,5 @@ jobs:
 
             #Now we have got the access of EC2 and we will start the deploy .
             cd glassDetection &&
-            # docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags &&
             docker compose up
           '
