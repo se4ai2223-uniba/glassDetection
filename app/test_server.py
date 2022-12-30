@@ -17,9 +17,7 @@ def test_server():
     """
     Function for testing the api
     """
-    print(os.environ)
-    HOST_URL = os.environ("SSH_HOST")
-    url = HOST_URL + ":8000/"
+    url = "ec2-34-246-171-145.eu-west-1.compute.amazonaws.com:8000/"
     response = requests.get(url=url)
 
     assert response.request.method == "GET"
