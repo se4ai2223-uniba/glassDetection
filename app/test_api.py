@@ -69,7 +69,7 @@ def test_image():
 def test_not_image():
     """Function for testing the input of the user"""
 
-    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
+    url = "ec2-34-244-52-118.eu-west-1.compute.amazonaws.com:8000/predict"
     file = os.path.join(dir, "..", "requirements.txt")
     data_tag = "maybeImage"
     data = {data_tag: open(file, "rb")}

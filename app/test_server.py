@@ -17,7 +17,7 @@ def test_server():
     Function for testing the api
     """
 
-    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/"
+    url = "ec2-34-244-52-118.eu-west-1.compute.amazonaws.com:8000/"
     response = requests.get(url=url)
 
     assert response.request.method == "GET"
