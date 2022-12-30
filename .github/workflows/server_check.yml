@@ -1,8 +1,9 @@
 name: server_check
 
 on:
-  schedule:
-    - cron: '15 * * * 1'
+  push
+  # schedule:
+  #   - cron: '15 * * * 1'
 
 jobs:
   deployment:

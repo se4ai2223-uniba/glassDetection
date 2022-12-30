@@ -38,7 +38,7 @@ def test_image():
     """
     Function for testing the api
     """
-    HOST_URL = os.environ.get("SSH_HOST")
+    HOST_URL = os.environ("SSH_HOST")
     url = HOST_URL + ":8000/predict"
     path_image = os.path.join(dir, "test_img.jpg")
     data_tag = "maybeImage"
@@ -69,7 +69,7 @@ def test_image():
 def test_not_image():
     """Function for testing the input of the user"""
 
-    HOST_URL = os.environ.get("SSH_HOST")
+    HOST_URL = os.environ("SSH_HOST")
     url = HOST_URL + ":8000/predict"
     file = os.path.join(dir, "..", "requirements.txt")
     data_tag = "maybeImage"

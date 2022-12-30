@@ -17,7 +17,7 @@ def test_server():
     """
     Function for testing the api
     """
-    HOST_URL = os.environ.get("SSH_HOST")
+    HOST_URL = os.environ("SSH_HOST")
     url = HOST_URL + ":8000/"
     response = requests.get(url=url)
 
