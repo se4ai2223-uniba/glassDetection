@@ -5,6 +5,7 @@ on:
     paths:
       - 'app/api.py'
       - 'app/schemas.py'
+      - 'app/test_api.py'
 
 jobs:
   api-testing:
@@ -32,5 +33,7 @@ jobs:
           dvc pull -v models/finalModelGlassDetection255.dvc
           dvc pull -v data/Selfie_reduced/processed/selfie_reduced.h5.dvc
       - name: Test the API with pytest
+        env: 
+          SSH_HOST : ${{ secrets.SSH_HOST  }}
         run: |
           pytest app/

@@ -1,6 +1,7 @@
 """
     Scripts for testing the api
 """
+
 # pylint: disable=protected-access
 # pylint: disable=redefined-builtin
 # pylint: disable=import-error
