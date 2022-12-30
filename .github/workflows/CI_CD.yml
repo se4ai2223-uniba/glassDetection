@@ -1,15 +1,13 @@
 name: CI/CD
 
 on:
-  push
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - 'app/**' 
-#       - 'models/finalModelGlassDetection255/**'
-#       - 'app_frontend/**' 
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**' 
+      - 'models/finalModelGlassDetection255/**'
+      - 'app_frontend/**' 
 
 jobs:
   build_api:
@@ -53,7 +51,7 @@ jobs:
 
   deploy-packages:
     needs: [build_api,build_frontend]
-    name: deploy
+    name: deploy on server
 
     runs-on: ubuntu-latest
     steps:
