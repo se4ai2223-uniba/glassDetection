@@ -19,6 +19,9 @@ import numpy as np
 from fastapi import Depends, FastAPI, Request, Response
 from keras.models import load_model
 
+from fastapi import FastAPI, Request, Response
+from app.monitoring import instrumentator
+
 dir = os.path.dirname(__file__)
 sys.path.insert(1, os.path.join(dir))
 from schemas import PredictPayload
@@ -41,6 +44,8 @@ app = FastAPI(
     description="This API lets you make a prediction wether a subject wears glass",
     version="0.1",
 )
+
+instrumentator.instrument(app).expose(app, include_in_schema=False, should_gzip=True)
 
 
 def construct_response(f):
@@ -114,16 +119,18 @@ def prediction_route(
     prediction = prediction.round()
 
     if prediction[0] == 1:
-        response = {
+        _response = {
             "message": "Glasses detected!",
             "method": request.method,
             "status-code": HTTPStatus.OK,
         }
     else:
-        response = {
+        _response = {
             "message": "Glasses NOT detected!",
             "method": request.method,
             "status-code": HTTPStatus.OK,
         }
 
-    return response
+    response.headers["prediction"] = str(prediction[0])
+    
+    return _response
