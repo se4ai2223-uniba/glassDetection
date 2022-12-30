@@ -1,0 +1,84 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**' 
+      - 'models/finalModelGlassDetection255/**'
+      - 'app_frontend/**' 
+
+jobs:
+  build_api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-dvc@v1
+      - name: Download model from DVC
+        env: 
+          GDRIVE_CREDENTIALS_DATA: ${{ secrets.GDRIVE_CREDENTIALS_DATA }}
+        run:
+          dvc pull -v models/finalModelGlassDetection255.dvc
+
+      - name: docker login
+        env:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker login -u $username -p $password
+      - name: Build Docker Images
+        run: docker compose build api
+      - name: Docker Push
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/glassesdetection:api
+
+  build_frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: docker login
+        env:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker login -u $username -p $password
+      - name: Build Docker Images
+        run: docker compose build frontend
+      - name: Docker Push
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/glassesdetection:frontend
+
+  deploy-packages:
+    needs: [build_api,build_frontend]
+    name: deploy on server
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 
+      - name: Pull images in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME : ${{ secrets.SSH_HOST  }}
+            USER_NAME : ${{ secrets.SSH_USERNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+            #Now we have got the access of EC2 and we will start the deploy .
+            docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags
+          '
+
+      - name: Docker compose in EC2
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME : ${{ secrets.SSH_HOST  }}
+            USER_NAME : ${{ secrets.SSH_USERNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+            #Now we have got the access of EC2 and we will start the deploy .
+            cd glassDetection &&
+            docker compose up -d
+          '
