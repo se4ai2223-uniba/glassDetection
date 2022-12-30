@@ -38,8 +38,8 @@ def test_image():
     """
     Function for testing the api
     """
-
-    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
+    HOST_URL = os.environ.get("SSH_HOST")
+    url = HOST_URL + ":8000/predict"
     path_image = os.path.join(dir, "test_img.jpg")
     data_tag = "maybeImage"
     data = {data_tag: open(path_image, "rb")}
