@@ -4,7 +4,7 @@ on:
   push 
 
 jobs:
-    deploy-packages:
+  deploy-packages:
     name: test 
 
     runs-on: ubuntu-latest
