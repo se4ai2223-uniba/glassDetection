@@ -3,7 +3,8 @@ name: api_testing_workflow
 on:
   push:
     paths:
-      - 'app/**'
+      - 'app/api.py'
+      - 'app/schemas.py'
 
 jobs:
   api-testing:
