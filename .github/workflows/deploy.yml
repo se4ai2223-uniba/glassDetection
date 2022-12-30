@@ -13,7 +13,7 @@ jobs:
   deploy-packages:
     name: ubuntu-latest
     # the 2nd condition
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 
@@ -41,5 +41,5 @@ jobs:
 
             #Now we have got the access of EC2 and we will start the deploy .
             cd glassDetection &&
-            docker compose up
+            docker compose up -d
           '
