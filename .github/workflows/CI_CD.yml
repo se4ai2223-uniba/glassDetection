@@ -1,13 +1,15 @@
 name: CI/CD
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'app/**' 
-      - 'models/finalModelGlassDetection255/**'
-      - 'app_frontend/**' 
+  push
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - 'app/**' 
+#       - 'models/finalModelGlassDetection255/**'
+#       - 'app_frontend/**' 
 
 jobs:
   build_api:
