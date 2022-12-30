@@ -69,7 +69,8 @@ def test_image():
 def test_not_image():
     """Function for testing the input of the user"""
 
-    url = "ec2-34-244-52-118.eu-west-1.compute.amazonaws.com:8000/predict"
+    HOST_URL = os.environ.get("SSH_HOST")
+    url = HOST_URL + ":8000/predict"
     file = os.path.join(dir, "..", "requirements.txt")
     data_tag = "maybeImage"
     data = {data_tag: open(file, "rb")}
