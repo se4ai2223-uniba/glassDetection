@@ -7,6 +7,7 @@
 # pylint: disable=no-member
 # pylint: disable=wrong-import-order
 
+import os
 import requests
 from http import HTTPStatus
 
@@ -16,8 +17,8 @@ def test_server():
     """
     Function for testing the api
     """
-
-    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/"
+    HOST_URL = os.environ.get("SSH_HOST")
+    url = "http://" + HOST_URL + ":8000/"
     response = requests.get(url=url)
 
     assert response.request.method == "GET"

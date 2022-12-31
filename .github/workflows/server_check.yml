@@ -20,5 +20,7 @@ jobs:
           pip install pytest
           pip install requests  
       - name: test the server
+        env: 
+          SSH_HOST : ${{ secrets.SSH_HOST  }}
         run: |
           pytest app/test_server.py

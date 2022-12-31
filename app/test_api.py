@@ -1,6 +1,7 @@
 """
     Scripts for testing the api
 """
+
 # pylint: disable=protected-access
 # pylint: disable=redefined-builtin
 # pylint: disable=import-error
@@ -38,8 +39,8 @@ def test_image():
     """
     Function for testing the api
     """
-
-    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
+    HOST_URL = os.environ.get("SSH_HOST")
+    url = "http://" + HOST_URL + ":8000/predict"
     path_image = os.path.join(dir, "test_img.jpg")
     data_tag = "maybeImage"
     data = {data_tag: open(path_image, "rb")}
@@ -69,7 +70,8 @@ def test_image():
 def test_not_image():
     """Function for testing the input of the user"""
 
-    url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com/predict"
+    HOST_URL = os.environ.get("SSH_HOST")
+    url = "http://" + HOST_URL + ":8000/predict"
     file = os.path.join(dir, "..", "requirements.txt")
     data_tag = "maybeImage"
     data = {data_tag: open(file, "rb")}
