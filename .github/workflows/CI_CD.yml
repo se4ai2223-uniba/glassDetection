@@ -66,9 +66,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
             #Now we have got the access of EC2 and we will start the deploy .
-            docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags &&
-            #remove older images
-            docker rmi $(docker images -f "dangling=true" -q) --force
+            docker pull ${{ secrets.DOCKER_USERNAME }}/glassesdetection --all-tags
 
           '
 
@@ -84,4 +82,17 @@ jobs:
             #Now we have got the access of EC2 and we will start the deploy .
             cd glassDetection &&
             docker compose up -d
+          '
+
+      - name: remove old images from the server
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME : ${{ secrets.SSH_HOST  }}
+            USER_NAME : ${{ secrets.SSH_USERNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+
+            #Now we have got the access of EC2 and we will start the deploy .
+            docker rmi $(docker images -f "dangling=true" -q) --force
           '
