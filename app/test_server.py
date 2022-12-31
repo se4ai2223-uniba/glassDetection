@@ -1,5 +1,5 @@
 """
-    Scripts for testing the api
+    Scripts to test the api's server
 """
 # pylint: disable=protected-access
 # pylint: disable=redefined-builtin
