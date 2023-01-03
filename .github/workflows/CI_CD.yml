@@ -8,7 +8,7 @@ on:
       - 'app/**' 
       - 'models/finalModelGlassDetection255/**'
       - 'app_frontend/**' 
-      - './docker-compose.yml'
+      - 'docker-compose.yml'
 
 jobs:
   build_api:
