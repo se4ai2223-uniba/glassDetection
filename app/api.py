@@ -115,10 +115,11 @@ def prediction_route(
     img_list.append(img)
     img_list = np.array(img_list)
 
-    prediction = best_model_glasses.predict(img_list)
+    prediction_array = best_model_glasses.predict(img_list)
+    prediction = prediction_array[0][0]
     prediction = prediction.round()
 
-    if prediction[0] == 1:
+    if prediction == 1:
         _response = {
             "message": "Glasses detected!",
             "method": request.method,
@@ -131,6 +132,6 @@ def prediction_route(
             "status-code": HTTPStatus.OK,
         }
 
-    response.headers["prediction"] = str(prediction[0])
-    
+    response.headers["prediction"] = str(int(prediction))
+
     return _response

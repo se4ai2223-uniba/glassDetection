@@ -78,6 +78,7 @@ def model_output(
         if info.modified_handler == "/predict":
             prediction = info.response.headers.get("prediction")
             model_type = "CNN"
+            prediction = float(prediction)
             if prediction:
                 METRIC.labels(model_type).observe(prediction)
 
