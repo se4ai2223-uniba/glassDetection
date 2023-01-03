@@ -24,8 +24,6 @@ class TypicalIrisUser(HttpUser):
     def cnn_prediction(self):
         """Function to send a post request to the api"""
 
-        # url = "https://yfvpqbuhav.eu-west-1.awsapprunner.com"
-
         dir = os.path.dirname(__file__)
         image = Image.open(os.path.join(dir, "app", "test_img.jpg"))
         image_stream = [("maybeImage", image)]

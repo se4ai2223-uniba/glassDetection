@@ -20,7 +20,7 @@ from fastapi import Depends, FastAPI, Request, Response
 from keras.models import load_model
 
 from fastapi import FastAPI, Request, Response
-from app.monitoring import instrumentator
+
 
 dir = os.path.dirname(__file__)
 sys.path.insert(1, os.path.join(dir))
@@ -29,9 +29,8 @@ from schemas import PredictPayload
 sys.path.insert(1, os.path.join(dir, "..", "src", "data"))
 from make_dataset import _face_alignment
 
-
-sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
-from predict_model import create_test_set
+sys.path.insert(1, os.path.join(dir, "..", "app"))
+from monitoring import instrumentator
 
 checkpoint_filepath_glasses = os.path.join(
     dir, "..", "models", "finalModelGlassDetection255"
