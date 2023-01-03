@@ -22,7 +22,7 @@ from imagecorruptions import corrupt
 
 
 dir = os.path.dirname(__file__)
-sys.path.insert(1, os.path.join(dir, "src", "models"))
+sys.path.insert(1, os.path.join(dir, "..", "src", "models"))
 
 from predict_model import create_test_set
 from train_model import create_train_val_sets
@@ -74,7 +74,7 @@ X_train_noise, X_valid_noise, x_corr = create_noise_sets(X_train, X_valid, X_tes
 
 # Loading the CNN
 CHECKPOINT_FILEPATH_GLASSES = os.path.join(
-    dir, "models", "finalModelGlassDetection255")
+    dir, "..", "models", "finalModelGlassDetection255")
 
 # Load best model from checkpoint
 glasses_model = load_model(CHECKPOINT_FILEPATH_GLASSES)
