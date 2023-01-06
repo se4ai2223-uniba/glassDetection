@@ -12,7 +12,6 @@ on:
       - 'docker-compose.yml'
       - '.github/workflows/CI_CD.yml'
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
