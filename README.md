@@ -19,53 +19,157 @@ Deploy of a ML (CNN - based) model able to detect subjects wearing glass in phot
 
 Project Organization
 ------------
-
-    ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
-    │https://github.com/se4ai2223-uniba/glassDetection/pull/22/conflict?name=README.md&ancestor_oid=6fce1eadba2c0cab75559c45d58abca1fb6a85be&base_oid=5c7e710453fb6a8daa5862d792a192aaf9632691&head_oid=df8915b8d0fb1f636de94af9d4770fecea42f4ad
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
-    │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
-
-
+    📦glassDetection
+     ┣ 📂.dvc
+     ┣ 📂.git
+     ┣ 📂.github
+     ┃ ┗ 📂workflows
+     ┃ ┃ ┣ 📜api-test.yaml
+     ┃ ┃ ┣ 📜CI_CD.yml
+     ┃ ┃ ┣ 📜dvc_repro.yml
+     ┃ ┃ ┣ 📜QA.yml
+     ┃ ┃ ┣ 📜server_check.yml
+     ┃ ┃ ┗ 📜test_code.yml
+     ┣ 📂app
+     ┃ ┣ 📜api.py
+     ┃ ┣ 📜Dockerfile
+     ┃ ┣ 📜monitoring.py
+     ┃ ┣ 📜schemas.py
+     ┃ ┣ 📜test2.jpg
+     ┃ ┣ 📜test_api.py
+     ┃ ┣ 📜test_img.jpeg
+     ┃ ┣ 📜test_img.jpg
+     ┃ ┗ 📜test_server.py
+     ┣ 📂app_frontend
+     ┃ ┣ 📂test
+     ┃ ┣ 📜Dockerfile
+     ┃ ┣ 📜interface.py
+     ┃ ┗ 📜requirements_frontend.txt
+     ┣ 📂data
+     ┃ ┣ 📂CelebA
+     ┃ ┃ ┣ 📂figures
+     ┃ ┃ ┃ ┗ 📜exampleCelebA.png
+     ┃ ┃ ┣ 📂raw
+     ┃ ┃ ┃ ┣ 📜.gitignore
+     ┃ ┃ ┃ ┣ 📜celeb_augmented_preprocessed.h5.dvc
+     ┃ ┃ ┃ ┣ 📜list_attr_celeba.txt
+     ┃ ┃ ┃ ┗ 📜noglass_celeb_augmented_preprocessed.h5.dvc
+     ┃ ┃ ┗ 📜README.md
+     ┃ ┣ 📂Selfie
+     ┃ ┃ ┣ 📂figures
+     ┃ ┃ ┃ ┣ 📜sample.jpg
+     ┃ ┃ ┃ ┗ 📜selfie_dataset6.jpg
+     ┃ ┃ ┣ 📂processed
+     ┃ ┃ ┃ ┗ 📜selfie_dataset.txt
+     ┃ ┃ ┣ 📂raw
+     ┃ ┃ ┃ ┣ 📜.gitignore
+     ┃ ┃ ┃ ┣ 📜noglass_selfie_augmented_preprocessed.h5.dvc
+     ┃ ┃ ┃ ┗ 📜selfie_augmented_preprocessed.h5.dvc
+     ┃ ┃ ┗ 📜README.md
+     ┃ ┣ 📂Selfie_reduced
+     ┃ ┃ ┣ 📂processed
+     ┃ ┃ ┃ ┣ 📂images
+     ┃ ┃ ┃ ┣ 📜.gitignore
+     ┃ ┃ ┃ ┣ 📜README.txt
+     ┃ ┃ ┃ ┣ 📜selfie_reduced.h5
+     ┃ ┃ ┃ ┗ 📜selfie_reduced.h5.dvc
+     ┃ ┃ ┣ 📂raw
+     ┃ ┃ ┃ ┣ 📜.gitignore
+     ┃ ┃ ┃ ┣ 📜Selfie-dataset.zip
+     ┃ ┃ ┃ ┣ 📜Selfie-dataset.zip.dvc
+     ┃ ┃ ┃ ┗ 📜selfie_reduced.h5
+     ┃ ┃ ┗ 📜.gitignore
+     ┃ ┗ 📂UTK_face
+     ┃ ┃ ┣ 📂figures
+     ┃ ┃ ┃ ┗ 📜samples.png
+     ┃ ┃ ┣ 📂raw
+     ┃ ┃ ┃ ┣ 📜.gitignore
+     ┃ ┃ ┃ ┣ 📜noglass_utk_augmented_preprocessed.h5.dvc
+     ┃ ┃ ┃ ┗ 📜utk_augmented_preprocessed.h5.dvc
+     ┃ ┃ ┗ 📜README.md
+     ┣ 📂docs
+     ┃ ┣ 📜commands.rst
+     ┃ ┣ 📜conf.py
+     ┃ ┣ 📜getting-started.rst
+     ┃ ┣ 📜index.rst
+     ┃ ┣ 📜make.bat
+     ┃ ┗ 📜Makefile
+     ┣ 📂great_expectations
+     ┃ ┣ 📂checkpoints
+     ┃ ┃ ┣ 📜13_rows_deleted.yml
+     ┃ ┃ ┗ 📜13_rows_deleted1.yml
+     ┃ ┣ 📂expectations
+     ┃ ┃ ┣ 📜.ge_store_backend_id
+     ┃ ┃ ┣ 📜reduced.json
+     ┃ ┃ ┗ 📜reduced_suite.json
+     ┃ ┣ 📂plugins
+     ┃ ┃ ┗ 📂custom_data_docs
+     ┃ ┃ ┃ ┣ 📂renderers
+     ┃ ┃ ┃ ┣ 📂styles
+     ┃ ┃ ┃ ┃ ┗ 📜data_docs_custom_styles.css
+     ┃ ┃ ┃ ┗ 📂views
+     ┃ ┣ 📜.gitignore
+     ┃ ┗ 📜great_expectations.yml
+     ┣ 📂models
+     ┃ ┣ 📂figures
+     ┃ ┃ ┣ 📜hardToClassify.png
+     ┃ ┃ ┣ 📜ourCNN.png
+     ┃ ┃ ┣ 📜pipeline.PNG
+     ┃ ┃ ┗ 📜stateOfTheArtPerformance.png
+     ┃ ┣ 📜finalModelGlassDetection255.dvc
+     ┃ ┗ 📜README.md
+     ┣ 📂monitoring
+     ┃ ┣ 📜drift-detection.py
+     ┃ ┣ 📜locustfile.py
+     ┃ ┗ 📜prometheus.yml
+     ┣ 📂notebooks
+     ┃ ┗ 📜.gitkeep
+     ┣ 📂references
+     ┃ ┗ 📜.gitkeep
+     ┣ 📂reports
+     ┃ ┣ 📂figures
+     ┃ ┃ ┗ 📜.gitkeep
+     ┃ ┗ 📜.gitkeep
+     ┣ 📂src
+     ┃ ┣ 📂data
+     ┃ ┃ ┣ 📜.gitkeep
+     ┃ ┃ ┣ 📜FaceAlignerNetwork.py
+     ┃ ┃ ┣ 📜make_dataset.py
+     ┃ ┃ ┗ 📜__init__.py
+     ┃ ┣ 📂features
+     ┃ ┃ ┣ 📜.gitkeep
+     ┃ ┃ ┣ 📜build_features.py
+     ┃ ┃ ┗ 📜__init__.py
+     ┃ ┣ 📂models
+     ┃ ┃ ┣ 📜.gitkeep
+     ┃ ┃ ┣ 📜predict_model.py
+     ┃ ┃ ┣ 📜shape_predictor_5_face_landmarks.dat
+     ┃ ┃ ┣ 📜train_model.py
+     ┃ ┃ ┗ 📜__init__.py
+     ┃ ┣ 📂visualization
+     ┃ ┃ ┣ 📜.gitkeep
+     ┃ ┃ ┣ 📜visualize.py
+     ┃ ┃ ┗ 📜__init__.py
+     ┃ ┗ 📜__init__.py
+     ┣ 📂tests
+     ┃ ┣ 📜.gitignore
+     ┃ ┣ 📜testing_data.py
+     ┃ ┣ 📜test_make_dataset.py
+     ┃ ┗ 📜test_model.py
+     ┣ 📜.dvcignore
+     ┣ 📜.gitignore
+     ┣ 📜docker-compose.yml
+     ┣ 📜drift-detection.py
+     ┣ 📜dvc.lock
+     ┣ 📜dvc.yaml
+     ┣ 📜LICENSE
+     ┣ 📜Makefile
+     ┣ 📜README.md
+     ┣ 📜requirements.txt
+     ┣ 📜setup.py
+     ┣ 📜test_environment.py
+     ┗ 📜tox.ini
+     
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
