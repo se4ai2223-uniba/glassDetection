@@ -25,8 +25,10 @@ jobs:
         run:
           dvc pull -v models/finalModelGlassDetection255.dvc
 
-      - name: "Set up okteto"
+      - name: "Set up okteto environment"
         run: curl https://get.okteto.com -sSfL | sh
+        
+      - name: "Set up okteto context"
         run: okteto context use https://cloud.okteto.com --token ${{ secrets.OKTETO_GITHUB_ACTIONS }}
       
       - name: "build and push on okteto"
