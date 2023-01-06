@@ -10,9 +10,11 @@ on:
       - 'models/finalModelGlassDetection255/**'
       - 'app_frontend/**' 
       - 'docker-compose.yml'
+      - '.github/workflows/CI_CD.yml'
+
 
 jobs:
-  build_api:
+  build:
     runs-on: ubuntu-latest
 
     steps:
