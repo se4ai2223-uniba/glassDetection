@@ -1,0 +1,77 @@
+name: glassDetection
+
+# The build section defines how to build the images of your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#build
+build:
+
+  api:
+    context: .
+    dockerfile: app/Dockerfile
+    image: amt2k10/glassesdetection:api
+
+  frontend:
+    context: .
+    dockerfile: app_frontend/Dockerfile
+    image: amt2k10/glassesdetection:frontend
+
+deploy:
+  compose:
+    file: docker-compose.yml
+    services:
+      - api
+      - frontend
+      - prometheus
+      - grafana
+
+dev:
+  api:
+    image: amt2k10/glassesdetection:api
+    command: bash
+    workdir: /app
+    sync:
+      - .:/app
+    forward:
+      - 8000:8000
+    reverse:
+      - 9000:9000
+    volumes:
+      - /root/.cache/pip
+  frontend:
+    image: amt2k10/glassesdetection:frontend
+    command: bash
+    workdir: /app
+    sync:
+      - .:/app
+    forward:
+      - 8001:8001
+    reverse:
+      - 9000:9000
+    volumes:
+      - /root/.cache/pip
+  grafana:
+    command: bash
+    workdir: /usr/share/grafana
+    securityContext:
+      runAsUser: 472
+    sync:
+      - .:/usr/share/grafana
+    forward:
+      - 3000:3000
+    reverse:
+      - 9000:9000
+    volumes:
+      - /root/.cache/pip
+  prometheus:
+    command: bash
+    workdir: /prometheus
+    securityContext:
+      runAsUser: 65534
+    sync:
+      - .:/prometheus
+    forward:
+      - 9090:9090
+    reverse:
+      - 9000:9000
+    volumes:
+      - /root/.cache/pip
+
