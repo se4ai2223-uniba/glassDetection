@@ -9,7 +9,7 @@ Glasses Detection
 
 [![dvc repro](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/dvc_repro.yml)
 
-[![Docker Image Deployed on Cloud](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/container_upload_AWS.yml)
+[![CI/CD](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/CI_CD.yml/badge.svg)](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/CI_CD.yml)
 
 [![server_status](https://github.com/se4ai2223-uniba/glassDetection/actions/workflows/server_check.yml/badge.svg)](https://yfvpqbuhav.eu-west-1.awsapprunner.com/)
 
