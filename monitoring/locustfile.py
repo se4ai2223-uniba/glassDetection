@@ -25,7 +25,7 @@ class TypicalIrisUser(HttpUser):
         """Function to send a post request to the api"""
 
         dir = os.path.dirname(__file__)
-        image = Image.open(os.path.join(dir, "app", "test_img.jpg"))
-        image_stream = [("maybeImage", image)]
+        image = os.path.join(dir, "..", "app", "test_img.jpg")
+        image_stream = [("maybeImage", open(image, "rb"))]
 
         self.client.post("/predict", files=image_stream)
