@@ -2,6 +2,7 @@
 """
 import io
 import os
+import random
 from locust import HttpUser, task, between
 from PIL import Image
 
@@ -25,7 +26,12 @@ class TypicalIrisUser(HttpUser):
         """Function to send a post request to the api"""
 
         dir = os.path.dirname(__file__)
-        image = os.path.join(dir, "..", "app", "test_img.jpg")
+
+        rand = random.randint(0, 1)
+        if rand == 0:
+            image = os.path.join(dir, "..", "app", "test2.jpg")
+        else:
+            image = os.path.join(dir, "..", "app", "test_img.jpg")
         image_stream = [("maybeImage", open(image, "rb"))]
 
         self.client.post("/predict", files=image_stream)
